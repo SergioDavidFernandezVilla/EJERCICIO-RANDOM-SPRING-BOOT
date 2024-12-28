@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -43,5 +45,13 @@ public class ProductEntity {
     private double precio;
 
     @Column(name = "fecha_creada")
-    private LocalDateTime created_at; 
+    private LocalDateTime created_at;
+
+    @ManyToOne
+    @JoinColumn(name = "marca_id")
+    private MarcaEntity marca;
+
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private CategoryEntity categoria;
 }

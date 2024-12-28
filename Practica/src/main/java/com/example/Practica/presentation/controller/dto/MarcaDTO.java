@@ -1,5 +1,8 @@
 package com.example.Practica.presentation.controller.dto;
 
-public record MarcaDTO(String nombre, String descripcion) {
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonPropertyOrder({ "id", "marca", "descripcion" })
+public record MarcaDTO(Long id, String marca, String descripcion) {
     
 }

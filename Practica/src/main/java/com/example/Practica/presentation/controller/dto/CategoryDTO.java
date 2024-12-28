@@ -1,5 +1,10 @@
 package com.example.Practica.presentation.controller.dto;
 
-public record CategoryDTO(String nombre, String descripcion) {
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonPropertyOrder({"id", "nombre", "descripcion" })
+public record CategoryDTO(Long id, Set<String> nombre, String descripcion) {
     
 }

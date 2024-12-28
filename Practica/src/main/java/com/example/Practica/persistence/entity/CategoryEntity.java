@@ -1,5 +1,7 @@
 package com.example.Practica.persistence.entity;
 
+import java.util.Set;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,7 +30,7 @@ public class CategoryEntity {
 
     @Size(max = 100, message = "El nombre de la categoria no puede tener más de 100 caracteres")
     @NotBlank(message = "El nombre es obligatorio")
-    private String nombre;
+    private Set<String> nombre;
 
     @Size(max = 50, message = "La descripcion de la categoria no puede tener más de 50 caracteres")
     @NotBlank(message = "La marca es obligatoria")
