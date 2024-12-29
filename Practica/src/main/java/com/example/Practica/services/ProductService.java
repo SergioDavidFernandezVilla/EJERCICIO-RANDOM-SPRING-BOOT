@@ -16,8 +16,6 @@ import com.example.Practica.utils.mappers.CategoryMapper;
 import com.example.Practica.utils.mappers.MarcaMapper;
 import com.example.Practica.utils.mappers.ProductMapper;
 
-import jakarta.transaction.Transactional;
-
 
 @Service
 public class ProductService {
@@ -31,7 +29,6 @@ public class ProductService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @Transactional
     public ProductDTO productCreate(ProductDTO productDTO) {
         try {
             // Crear o buscar la marca

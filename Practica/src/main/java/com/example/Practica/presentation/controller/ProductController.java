@@ -32,10 +32,5 @@ public class ProductController {
     public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO){
         return new ResponseEntity<>(productService.productCreate(productDTO), HttpStatus.CREATED);
     }
-
-    @GetMapping("/list")
-    public ResponseEntity<ProductDTO> listProducts(){
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
     
 }
