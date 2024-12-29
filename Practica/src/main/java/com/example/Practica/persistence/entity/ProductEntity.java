@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
@@ -54,4 +55,7 @@ public class ProductEntity {
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private CategoryEntity categoria;
+
+    @Version
+    private Long version;
 }

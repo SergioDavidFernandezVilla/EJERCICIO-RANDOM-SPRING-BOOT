@@ -3,6 +3,7 @@ package com.example.Practica.utils.mappers;
 import com.example.Practica.persistence.entity.CategoryEntity;
 import com.example.Practica.presentation.controller.dto.CategoryDTO;
 
+
 public class CategoryMapper {
 
      // Mapeo de CategoryEntity a CategoryDTO
