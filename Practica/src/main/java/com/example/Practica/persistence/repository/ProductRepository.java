@@ -7,5 +7,5 @@ import com.example.Practica.persistence.entity.ProductEntity;
 
 @Repository
 public interface ProductRepository extends CrudRepository<ProductEntity, Long> {
-    ProductEntity findByName(String nombre);
+    
 }

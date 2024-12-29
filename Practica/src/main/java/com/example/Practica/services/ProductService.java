@@ -22,17 +22,14 @@ import jakarta.transaction.Transactional;
 @Service
 public class ProductService {
 
-    private final ProductRepository productRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     @Autowired
     private MarcaRepository marcaRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
-
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
 
     @Transactional
     public ProductDTO productCreate(ProductDTO productDTO) {
