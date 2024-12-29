@@ -35,35 +35,41 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductDTO createProduct(ProductDTO productDTO) {
-    try {
-        // Crear o buscar la marca
-        MarcaEntity marcaEntity = marcaRepository.findById(productDTO.marca().id())
-            .orElseGet(() -> marcaRepository.save(MarcaMapper.fromDTO(productDTO.marca())));
+    public ProductDTO productCreate(ProductDTO productDTO) {
+        try {
+            // Crear o buscar la marca
+            MarcaEntity marcaEntity = marcaRepository.findById(productDTO.marca().id())
+                .orElseGet(() -> marcaRepository.save(MarcaMapper.fromDTO(productDTO.marca())));
 
-        // Crear o buscar la categoría
-        CategoryEntity categoryEntity = categoryRepository.findById(productDTO.categoria().id())
-            .orElseGet(() -> categoryRepository.save(CategoryMapper.fromDTO(productDTO.categoria())));
+            // Crear o buscar la categoría
+            CategoryEntity categoryEntity = categoryRepository.findById(productDTO.categoria().id())
+                .orElseGet(() -> categoryRepository.save(CategoryMapper.fromDTO(productDTO.categoria())));
 
-        // Mapear el DTO a una entidad
-        ProductEntity productEntity = ProductMapper.fromDTO(productDTO);
+            // Mapear el DTO a una entidad
+            ProductEntity productEntity = ProductMapper.fromDTO(productDTO);
 
-        // Asignar relaciones
-        productEntity.setMarca(marcaEntity);
-        productEntity.setCategoria(categoryEntity);
+            // Asignar relaciones
+            productEntity.setMarca(marcaEntity);
+            productEntity.setCategoria(categoryEntity);
 
-        // Asignar fecha de creación
-        productEntity.setCreated_at(LocalDateTime.now());
+            // Asignar fecha de creación
+            productEntity.setCreated_at(LocalDateTime.now());
 
-        // Guardar el producto
-        ProductEntity savedEntity = productRepository.save(productEntity);
+            // Guardar el producto
+            ProductEntity savedEntity = productRepository.save(productEntity);
 
-        // Mapear la entidad guardada a un DTO
-        return ProductMapper.fromEntity(savedEntity);
-    } catch (Exception e) {
-        throw new RuntimeException("Error al crear el producto: " + e.getMessage(), e);
+            // Mapear la entidad guardada a un DTO
+            return ProductMapper.fromEntity(savedEntity);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al crear el producto: " + e.getMessage(), e);
+        }
     }
-}
+
+    // LIST PRODUCTS
+    public Iterable<ProductEntity> productList() {
+        return productRepository.findAll();
+    }
+
 
     
 }

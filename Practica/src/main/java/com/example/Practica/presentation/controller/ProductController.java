@@ -30,7 +30,7 @@ public class ProductController {
 
     @PostMapping("/create")
     public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO){
-        return new ResponseEntity<>(productService.createProduct(productDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(productService.productCreate(productDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/list")
