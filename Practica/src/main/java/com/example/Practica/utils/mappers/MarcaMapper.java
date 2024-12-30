@@ -1,26 +1,19 @@
 package com.example.Practica.utils.mappers;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+
 import com.example.Practica.persistence.entity.MarcaEntity;
 import com.example.Practica.presentation.controller.dto.MarcaDTO;
 
-public class MarcaMapper {
 
-     // Mapeo de MarcaDTO a MarcaEntity
-     public static MarcaEntity fromDTO(MarcaDTO marcaDTO) {
-        return MarcaEntity.builder()
-        .id(marcaDTO.id())
-        .marca(marcaDTO.marca())
-        .descripcion(marcaDTO.descripcion())
-        .build();
-    }
+@Mapper(componentModel = "spring")
+public interface MarcaMapper {
 
-    // Mapeo de MarcaEntity a MarcaDTO
-    public static MarcaDTO fromEntity(MarcaEntity marcaDTO) {
-        return new MarcaDTO(
-            marcaDTO.getId(),
-            marcaDTO.getMarca(),
-            marcaDTO.getDescripcion()
-        );
-    }
+    MarcaMapper INSTANCE = Mappers.getMapper(MarcaMapper.class);
+
+    MarcaDTO fromEntity(MarcaEntity marca);
+
+    MarcaEntity fromDTO(MarcaDTO marca);
 
 }

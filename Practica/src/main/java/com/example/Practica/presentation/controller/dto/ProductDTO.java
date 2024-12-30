@@ -12,7 +12,7 @@ public record ProductDTO(
     String descripcion, 
     double precio, 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Opcional, si necesitas un formato específico
-    @JsonProperty("created_at") LocalDateTime createdAt, // CamelCase para consistencia
+    @JsonProperty("created_at") LocalDateTime created_at, // CamelCase para consistencia
     MarcaDTO marca, 
     CategoryDTO categoria
 ) {}

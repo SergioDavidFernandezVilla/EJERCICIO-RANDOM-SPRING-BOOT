@@ -7,7 +7,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -36,7 +35,4 @@ public class CategoryEntity {
     @Size(max = 50, message = "La descripcion de la categoria no puede tener más de 50 caracteres")
     @NotBlank(message = "La marca es obligatoria")
     private String descripcion;
-
-    @Version
-    private Long version;
 }

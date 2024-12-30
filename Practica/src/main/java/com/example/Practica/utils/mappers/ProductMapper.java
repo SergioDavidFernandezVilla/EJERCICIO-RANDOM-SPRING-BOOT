@@ -1,32 +1,18 @@
 package com.example.Practica.utils.mappers;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+
 import com.example.Practica.persistence.entity.ProductEntity;
 import com.example.Practica.presentation.controller.dto.ProductDTO;
 
-public class ProductMapper {
+@Mapper(componentModel = "spring")
+public interface ProductMapper {
 
-    // Mapeo de ProductDTO a ProductEntity
-    public static ProductEntity fromDTO(ProductDTO productDTO) {
-        return ProductEntity.builder()
-            .id(productDTO.id())
-            .nombre(productDTO.nombre())
-            .precio(productDTO.precio())
-            .descripcion(productDTO.descripcion())
-            .marca(MarcaMapper.fromDTO(productDTO.marca())) // Mapeo de marca
-            .categoria(CategoryMapper.fromDTO(productDTO.categoria())) // Mapeo de categoría
-            .build();
-    }
+    ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
-    // Mapeo de ProductEntity a ProductDTO
-    public static ProductDTO fromEntity(ProductEntity productEntity) {
-        return new ProductDTO(
-            productEntity.getId(),
-            productEntity.getNombre(),
-            productEntity.getDescripcion(),
-            productEntity.getPrecio(),
-            productEntity.getCreated_at(),
-            MarcaMapper.fromEntity(productEntity.getMarca()), // Mapeo de marca
-            CategoryMapper.fromEntity(productEntity.getCategoria()) // Mapeo de categoría
-        );
-    }
+    ProductDTO fromEntity(ProductEntity producto);
+
+    ProductEntity fromDTO(ProductDTO producto);
+
 }

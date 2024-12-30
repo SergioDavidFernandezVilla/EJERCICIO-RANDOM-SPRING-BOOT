@@ -2,7 +2,6 @@ package com.example.Practica.persistence.entity;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
@@ -45,7 +43,6 @@ public class ProductEntity {
     @NotBlank(message = "El precio es obligatorio")
     private double precio;
 
-    @Column(name = "fecha_creada")
     private LocalDateTime created_at;
 
     @ManyToOne
@@ -56,6 +53,4 @@ public class ProductEntity {
     @JoinColumn(name = "categoria_id")
     private CategoryEntity categoria;
 
-    @Version
-    private Long version;
 }

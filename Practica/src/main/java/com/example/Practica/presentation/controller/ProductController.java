@@ -1,6 +1,8 @@
 package com.example.Practica.presentation.controller;
 
-import org.springframework.http.HttpStatus;
+import java.net.URI;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,14 +25,27 @@ public class ProductController {
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
-    
-    @GetMapping("/index")
-    public String indexHome(){
-        return "index";
+
+    @GetMapping("/status")
+    public String status() {
+        return "Service is running";
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO){
-        return new ResponseEntity<>(productService.productCreate(productDTO), HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO) {
+        ProductDTO createdProduct = productService.productCreate(productDTO);
+        return ResponseEntity
+                .created(URI.create("/products/" + createdProduct.id()))
+                .body(createdProduct);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductDTO>> listProducts() {
+        return ResponseEntity.ok(productService.productList());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.productGetById(id));
     }
 }

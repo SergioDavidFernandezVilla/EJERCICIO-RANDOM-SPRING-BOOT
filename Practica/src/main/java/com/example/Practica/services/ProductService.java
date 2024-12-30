@@ -32,6 +32,15 @@ public class ProductService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private ProductMapper productMapper;
+
+    @Autowired
+    private MarcaMapper marcaMapper;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
+
     public ProductDTO productCreate(ProductDTO productDTO) {
         try {
             // Crear o buscar la marca
@@ -41,8 +50,8 @@ public class ProductService {
             CategoryEntity categoryEntity = findOrCreateCategory(productDTO.categoria());
 
             // Mapear el DTO a una entidad
-            ProductEntity productEntity = ProductMapper.fromDTO(productDTO);
-
+            ProductEntity productEntity = productMapper.fromDTO(productDTO);
+            
             // Asignar relaciones
             productEntity.setMarca(marcaEntity);
             productEntity.setCategoria(categoryEntity);
@@ -55,7 +64,7 @@ public class ProductService {
 
 
             // Mapear la entidad guardada a un DTO
-            return ProductMapper.fromEntity(savedEntity);
+            return productMapper.fromEntity(savedEntity);
         } catch (Exception e) {
             throw new RuntimeException("Error al crear el producto: " + e.getMessage(), e);
         }
@@ -63,22 +72,26 @@ public class ProductService {
 
     private MarcaEntity findOrCreateMarca(MarcaDTO marcaDTO) {
         return marcaRepository.findById(marcaDTO.id())
-            .orElseGet(() -> marcaRepository.save(MarcaMapper.fromDTO(marcaDTO)));
+            .orElseGet(() -> marcaRepository.save(marcaMapper.fromDTO(marcaDTO)));
     }
 
     private CategoryEntity findOrCreateCategory(CategoryDTO categoryDTO) {
         return categoryRepository.findById(categoryDTO.id())
-            .orElseGet(() -> categoryRepository.save(CategoryMapper.fromDTO(categoryDTO)));
+            .orElseGet(() -> categoryRepository.save(categoryMapper.fromDTO(categoryDTO)));
     }
 
     // LIST PRODUCTS
-    public List<ProductEntity> productList() {
-        return (List<ProductEntity>) productRepository.findAll();
+    public List<ProductDTO> productList() {
+        return productRepository.findAll().stream()
+            .map(productMapper::fromEntity)
+            .toList();
     }
 
     // GET PRODUCT BY ID
-    public ProductEntity productGetById(Long id) {
-        return productRepository.findById(id).orElse(null);
+    public ProductDTO productGetById(Long id) {
+        return productRepository.findById(id)
+            .map(productMapper::fromEntity)
+            .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + id));
     }
     
 }
