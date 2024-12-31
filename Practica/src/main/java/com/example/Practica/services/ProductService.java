@@ -19,6 +19,8 @@ import com.example.Practica.utils.mappers.CategoryMapper;
 import com.example.Practica.utils.mappers.MarcaMapper;
 import com.example.Practica.utils.mappers.ProductMapper;
 
+import jakarta.transaction.Transactional;
+
 
 @Service
 public class ProductService {
@@ -41,35 +43,35 @@ public class ProductService {
     @Autowired
     private CategoryMapper categoryMapper;
 
+    @Transactional
     public ProductDTO productCreate(ProductDTO productDTO) {
         try {
             // Crear o buscar la marca
-           MarcaEntity marcaEntity = findOrCreateMarca(productDTO.marca());
-
+            MarcaEntity marcaEntity = findOrCreateMarca(productDTO.marca());
+    
             // Crear o buscar la categoría
             CategoryEntity categoryEntity = findOrCreateCategory(productDTO.categoria());
-
+    
             // Mapear el DTO a una entidad
             ProductEntity productEntity = productMapper.fromDTO(productDTO);
             
             // Asignar relaciones
             productEntity.setMarca(marcaEntity);
             productEntity.setCategoria(categoryEntity);
-
+    
             // Asignar fecha de creación
             productEntity.setCreated_at(LocalDateTime.now());
-
-            // Guardar el producto
+    
+            // Guardar el producto en la misma transacción
             ProductEntity savedEntity = productRepository.save(productEntity);
-
-
+    
             // Mapear la entidad guardada a un DTO
             return productMapper.fromEntity(savedEntity);
         } catch (Exception e) {
             throw new RuntimeException("Error al crear el producto: " + e.getMessage(), e);
         }
     }
-
+    
     private MarcaEntity findOrCreateMarca(MarcaDTO marcaDTO) {
         return marcaRepository.findById(marcaDTO.id())
             .orElseGet(() -> marcaRepository.save(marcaMapper.fromDTO(marcaDTO)));

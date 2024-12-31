@@ -19,7 +19,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "marcas")
+@Table(name = "marca")
 public class MarcaEntity {
     
     @Id
@@ -33,4 +33,6 @@ public class MarcaEntity {
     @Size(max = 255, message = "La descripción de una marca, no puede tener más de 255 caracteres")
     @NotBlank(message = "La descripción es obligatoria")
     private String descripcion;
+
+    
 }
