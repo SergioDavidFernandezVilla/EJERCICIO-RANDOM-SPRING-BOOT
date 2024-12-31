@@ -1,5 +1,7 @@
 package com.example.Practica.persistence.entity;
 
+import org.hibernate.annotations.Fetch;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,5 +36,4 @@ public class MarcaEntity {
     @NotBlank(message = "La descripción es obligatoria")
     private String descripcion;
 
-    
 }
