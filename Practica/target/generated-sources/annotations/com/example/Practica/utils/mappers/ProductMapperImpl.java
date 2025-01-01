@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-01T04:28:27+0000",
+    date = "2025-01-01T04:33:45+0000",
     comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.41.0.v20241217-1506, environment: Java 17.0.13 (Eclipse Adoptium)"
 )
 @Component
@@ -76,6 +76,7 @@ public class ProductMapperImpl implements ProductMapper {
         String marca = null;
         String descripcion = null;
         String created_at = null;
+        String updated_at = null;
 
         id = marcaEntity.getId();
         marca = marcaEntity.getMarca();
@@ -83,8 +84,9 @@ public class ProductMapperImpl implements ProductMapper {
         if ( marcaEntity.getCreated_at() != null ) {
             created_at = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( marcaEntity.getCreated_at() );
         }
-
-        String updated_at = null;
+        if ( marcaEntity.getUpdated_at() != null ) {
+            updated_at = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( marcaEntity.getUpdated_at() );
+        }
 
         MarcaDTO marcaDTO = new MarcaDTO( id, marca, descripcion, created_at, updated_at );
 
@@ -100,6 +102,7 @@ public class ProductMapperImpl implements ProductMapper {
         Set<String> nombre = null;
         String descripcion = null;
         String created_at = null;
+        String updated_at = null;
 
         id = categoryEntity.getId();
         Set<String> set = categoryEntity.getNombre();
@@ -110,8 +113,9 @@ public class ProductMapperImpl implements ProductMapper {
         if ( categoryEntity.getCreated_at() != null ) {
             created_at = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( categoryEntity.getCreated_at() );
         }
-
-        String updated_at = null;
+        if ( categoryEntity.getUpdated_at() != null ) {
+            updated_at = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( categoryEntity.getUpdated_at() );
+        }
 
         CategoryDTO categoryDTO = new CategoryDTO( id, nombre, descripcion, created_at, updated_at );
 
@@ -134,6 +138,9 @@ public class ProductMapperImpl implements ProductMapper {
         if ( set != null ) {
             categoryEntity.nombre( new LinkedHashSet<String>( set ) );
         }
+        if ( categoryDTO.updated_at() != null ) {
+            categoryEntity.updated_at( LocalDateTime.parse( categoryDTO.updated_at() ) );
+        }
 
         return categoryEntity.build();
     }
@@ -151,6 +158,9 @@ public class ProductMapperImpl implements ProductMapper {
         marcaEntity.descripcion( marcaDTO.descripcion() );
         marcaEntity.id( marcaDTO.id() );
         marcaEntity.marca( marcaDTO.marca() );
+        if ( marcaDTO.updated_at() != null ) {
+            marcaEntity.updated_at( LocalDateTime.parse( marcaDTO.updated_at() ) );
+        }
 
         return marcaEntity.build();
     }

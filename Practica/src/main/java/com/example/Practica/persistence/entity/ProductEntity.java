@@ -47,7 +47,7 @@ public class ProductEntity {
 
     private LocalDateTime created_at;
     
-    private LocalDateTime update_at;
+    private LocalDateTime updated_at;
 
     @PrePersist
     protected void onCreate() {
@@ -56,7 +56,7 @@ public class ProductEntity {
 
     @PreUpdate
     protected void onUpdate() {
-        this.update_at = LocalDateTime.now();
+        this.updated_at = LocalDateTime.now();
     }
 
     @ManyToOne

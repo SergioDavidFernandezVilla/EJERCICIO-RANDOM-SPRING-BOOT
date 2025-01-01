@@ -41,7 +41,7 @@ public class CategoryEntity {
 
     private LocalDateTime created_at;
 
-    private LocalDateTime update_at;
+    private LocalDateTime updated_at;
 
     @PrePersist
     protected void onCreate() {
@@ -50,6 +50,6 @@ public class CategoryEntity {
 
     @PreUpdate
     protected void onUpdate() {
-        this.update_at = LocalDateTime.now();
+        this.updated_at = LocalDateTime.now();
     }
 }
