@@ -1,7 +1,6 @@
 package com.example.Practica.persistence.entity;
 
-import org.hibernate.annotations.Fetch;
-import org.springframework.data.annotation.CreatedDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,6 +38,6 @@ public class MarcaEntity {
     @NotBlank(message = "La descripción es obligatoria")
     private String descripcion;
 
-    
-    private CreatedDate created_at;
+
+    private LocalDateTime created_at;
 }
