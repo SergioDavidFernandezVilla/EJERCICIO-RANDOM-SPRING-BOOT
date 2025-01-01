@@ -2,6 +2,8 @@ package com.example.Practica.services;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +23,10 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    // GET ALL
-    public List<ProductDTO> findAllProducts() {
-        return productRepository.findAll(Sort.by(Sort.Direction.ASC, "id"))
-                .stream()
-                .map(ProductMapper.INSTANCE::fromEntity)
-                .toList();
+    // GET ALL WITH PAGINATION
+    public Page<ProductDTO> findAllProducts(Pageable pageable) {
+        Page<ProductEntity> products = productRepository.findAll(pageable);
+        return products.map(ProductMapper.INSTANCE::fromEntity);
     }
 
     // GET BY ID

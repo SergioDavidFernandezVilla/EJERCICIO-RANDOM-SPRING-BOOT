@@ -3,6 +3,9 @@ package com.example.Practica.presentation.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Practica.presentation.controller.dto.ProductDTO;
@@ -35,16 +39,21 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<ApiResponse> findAllProducts() {
+    public ResponseEntity<ApiResponse> findAllProducts(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         try {
+
+             // Creamos el objeto Pageable con el número de página y tamaño
+             Pageable pageable = PageRequest.of(page, size);
+
             // Llamamos al servicio para obtener los productos
-            List<ProductDTO> response = productService.findAllProducts();
+            Page<ProductDTO> response = productService.findAllProducts(pageable);
             
             // Retornamos la respuesta exitosa con la lista de productos
             ApiResponse apiResponse = ApiResponse.builder()
                     .message("Productos obtenidos exitosamente")
                     .status("success")
-                    .data(response)
+                    .data(response.getContent())  // Los productos actuales en la página
                     .statusCode(200)
                     .error(null)
                     .build();
