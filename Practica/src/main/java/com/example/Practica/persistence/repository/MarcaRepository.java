@@ -7,5 +7,7 @@ import com.example.Practica.persistence.entity.MarcaEntity;
 
 @Repository
 public interface MarcaRepository extends CrudRepository<MarcaEntity, Long> {
+
+    Iterable<MarcaEntity> findByMarcaContainingIgnoreCase(String marca);
     
 }
