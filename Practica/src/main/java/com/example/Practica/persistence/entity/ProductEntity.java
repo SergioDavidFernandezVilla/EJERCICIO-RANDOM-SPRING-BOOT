@@ -6,8 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -58,13 +56,5 @@ public class ProductEntity {
     protected void onUpdate() {
         this.updated_at = LocalDateTime.now();
     }
-
-    @ManyToOne
-    @JoinColumn(name = "marca_id")
-    private MarcaEntity marca;
-
-    @ManyToOne
-    @JoinColumn(name = "categoria_id")
-    private CategoryEntity categoria;
 
 }
