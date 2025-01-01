@@ -1,9 +1,5 @@
 package com.example.Practica.services;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.Practica.persistence.entity.CategoryEntity;
@@ -12,11 +8,7 @@ import com.example.Practica.persistence.entity.ProductEntity;
 import com.example.Practica.persistence.repository.CategoryRepository;
 import com.example.Practica.persistence.repository.MarcaRepository;
 import com.example.Practica.persistence.repository.ProductRepository;
-import com.example.Practica.presentation.controller.dto.CategoryDTO;
-import com.example.Practica.presentation.controller.dto.MarcaDTO;
 import com.example.Practica.presentation.controller.dto.ProductDTO;
-import com.example.Practica.utils.mappers.CategoryMapper;
-import com.example.Practica.utils.mappers.MarcaMapper;
 import com.example.Practica.utils.mappers.ProductMapper;
 
 import jakarta.transaction.Transactional;
@@ -25,75 +17,37 @@ import jakarta.transaction.Transactional;
 @Service
 public class ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
+    private final MarcaRepository marcaRepository;
+    private final CategoryRepository categoryRepository;
 
-    @Autowired
-    private MarcaRepository marcaRepository;
+    public ProductService(ProductRepository productRepository, MarcaRepository marcaRepository, CategoryRepository categoryRepository) {
+        this.productRepository = productRepository;
+        this.marcaRepository = marcaRepository;
+        this.categoryRepository = categoryRepository;
+    }
 
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
-    private ProductMapper productMapper;
-
-    @Autowired
-    private MarcaMapper marcaMapper;
-
-    @Autowired
-    private CategoryMapper categoryMapper;
-
+    // METODO CREATE
     @Transactional
-    public ProductDTO productCreate(ProductDTO productDTO) {
-        try {
-            // Crear o buscar la marca
-            MarcaEntity marcaEntity = findOrCreateMarca(productDTO.marca());
-    
-            // Crear o buscar la categoría
-            CategoryEntity categoryEntity = findOrCreateCategory(productDTO.categoria());
-    
-            // Mapear el DTO a una entidad
-            ProductEntity productEntity = productMapper.fromDTO(productDTO);
-            
-            // Asignar relaciones
-            productEntity.setMarca(marcaEntity);
-            productEntity.setCategoria(categoryEntity);
-    
-            // Asignar fecha de creación
-            productEntity.setCreated_at(LocalDateTime.now());
-    
-            // Guardar el producto en la misma transacción
-            ProductEntity savedEntity = productRepository.save(productEntity);
-    
-            // Mapear la entidad guardada a un DTO
-            return productMapper.fromEntity(savedEntity);
-        } catch (Exception e) {
-            throw new RuntimeException("Error al crear el producto: " + e.getMessage(), e);
-        }
-    }
-    
-    private MarcaEntity findOrCreateMarca(MarcaDTO marcaDTO) {
-        return marcaRepository.findById(marcaDTO.id())
-            .orElseGet(() -> marcaRepository.save(marcaMapper.fromDTO(marcaDTO)));
+    public ProductDTO createProduct(ProductDTO productDTO) {
+
+        // Crear una instancia de ProductEntity a partir del DTO
+        ProductEntity product = ProductMapper.INSTANCE.fromDTO(productDTO);
+
+        // Obtener las entidades MarcaEntity y CategoryEntity correspondientes
+        MarcaEntity marca = marcaRepository.findById(productDTO.marca().id())
+            .orElseThrow(() -> new RuntimeException("Marca no encontrada"));
+        CategoryEntity category = categoryRepository.findById(productDTO.categoria().id())
+            .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
+
+        // Asignar las entidades MarcaEntity y CategoryEntity a la entidad ProductEntity
+        product.setMarca(marca);
+        product.setCategoria(category);
+
+        // Guardar la entidad ProductEntity en la base de datos
+        ProductEntity productSaved = productRepository.save(product);
+        return ProductMapper.INSTANCE.fromEntity(productSaved);
     }
 
-    private CategoryEntity findOrCreateCategory(CategoryDTO categoryDTO) {
-        return categoryRepository.findById(categoryDTO.id())
-            .orElseGet(() -> categoryRepository.save(categoryMapper.fromDTO(categoryDTO)));
-    }
 
-    // LIST PRODUCTS
-    public List<ProductDTO> productList() {
-        return productRepository.findAll().stream()
-            .map(productMapper::fromEntity)
-            .toList();
-    }
-
-    // GET PRODUCT BY ID
-    public ProductDTO productGetById(Long id) {
-        return productRepository.findById(id)
-            .map(productMapper::fromEntity)
-            .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + id));
-    }
-    
-}
+}   
