@@ -32,7 +32,8 @@ public class CategoryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ElementCollection
+    @Size(max = 50, message = "La categoria no puede tener más de 50 caracteres")
+    @NotBlank(message = "La categoria es obligatoria")
     private String categoria;
 
     @Size(max = 50, message = "La descripcion de la categoria no puede tener más de 50 caracteres")
