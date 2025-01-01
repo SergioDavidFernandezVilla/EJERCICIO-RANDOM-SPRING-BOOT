@@ -21,7 +21,7 @@ public record ProductDTO(
     String descripcion,
     
     @Positive(message = "El precio debe ser positivo")
-    double precio,
+    Double precio,
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime created_at, 
