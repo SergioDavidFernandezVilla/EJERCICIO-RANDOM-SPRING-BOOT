@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({"id", "nombre", "descripcion", "precio", "marca", "categoria", "created_at"})
+@JsonPropertyOrder({"id", "nombre", "descripcion", "precio", "marca", "categoria", "created_at", "updated_at" })
 public record ProductDTO(
     Long id, 
     String nombre, 

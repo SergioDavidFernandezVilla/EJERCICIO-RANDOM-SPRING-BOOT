@@ -7,6 +7,7 @@ import com.example.Practica.presentation.controller.dto.CategoryDTO;
 import com.example.Practica.presentation.controller.dto.MarcaDTO;
 import com.example.Practica.presentation.controller.dto.ProductDTO;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.annotation.processing.Generated;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-01T04:20:37+0000",
+    date = "2025-01-01T04:28:27+0000",
     comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.41.0.v20241217-1506, environment: Java 17.0.13 (Eclipse Adoptium)"
 )
 @Component
@@ -74,12 +75,18 @@ public class ProductMapperImpl implements ProductMapper {
         Long id = null;
         String marca = null;
         String descripcion = null;
+        String created_at = null;
 
         id = marcaEntity.getId();
         marca = marcaEntity.getMarca();
         descripcion = marcaEntity.getDescripcion();
+        if ( marcaEntity.getCreated_at() != null ) {
+            created_at = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( marcaEntity.getCreated_at() );
+        }
 
-        MarcaDTO marcaDTO = new MarcaDTO( id, marca, descripcion );
+        String updated_at = null;
+
+        MarcaDTO marcaDTO = new MarcaDTO( id, marca, descripcion, created_at, updated_at );
 
         return marcaDTO;
     }
@@ -92,6 +99,7 @@ public class ProductMapperImpl implements ProductMapper {
         Long id = null;
         Set<String> nombre = null;
         String descripcion = null;
+        String created_at = null;
 
         id = categoryEntity.getId();
         Set<String> set = categoryEntity.getNombre();
@@ -99,8 +107,13 @@ public class ProductMapperImpl implements ProductMapper {
             nombre = new LinkedHashSet<String>( set );
         }
         descripcion = categoryEntity.getDescripcion();
+        if ( categoryEntity.getCreated_at() != null ) {
+            created_at = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( categoryEntity.getCreated_at() );
+        }
 
-        CategoryDTO categoryDTO = new CategoryDTO( id, nombre, descripcion );
+        String updated_at = null;
+
+        CategoryDTO categoryDTO = new CategoryDTO( id, nombre, descripcion, created_at, updated_at );
 
         return categoryDTO;
     }
@@ -112,6 +125,9 @@ public class ProductMapperImpl implements ProductMapper {
 
         CategoryEntity.CategoryEntityBuilder categoryEntity = CategoryEntity.builder();
 
+        if ( categoryDTO.created_at() != null ) {
+            categoryEntity.created_at( LocalDateTime.parse( categoryDTO.created_at() ) );
+        }
         categoryEntity.descripcion( categoryDTO.descripcion() );
         categoryEntity.id( categoryDTO.id() );
         Set<String> set = categoryDTO.nombre();
@@ -129,6 +145,9 @@ public class ProductMapperImpl implements ProductMapper {
 
         MarcaEntity.MarcaEntityBuilder marcaEntity = MarcaEntity.builder();
 
+        if ( marcaDTO.created_at() != null ) {
+            marcaEntity.created_at( LocalDateTime.parse( marcaDTO.created_at() ) );
+        }
         marcaEntity.descripcion( marcaDTO.descripcion() );
         marcaEntity.id( marcaDTO.id() );
         marcaEntity.marca( marcaDTO.marca() );
