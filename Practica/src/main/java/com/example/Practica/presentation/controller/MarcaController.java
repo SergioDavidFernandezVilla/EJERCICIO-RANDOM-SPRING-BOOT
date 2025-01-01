@@ -1,5 +1,8 @@
 package com.example.Practica.presentation.controller;
 
+import java.util.List;
+
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,8 +33,11 @@ public class MarcaController {
 
     //GET ALL
     @GetMapping("/all")
-    public ResponseEntity<Object> findAllMarcas(){
-        return ResponseEntity.status(HttpStatus.OK).body(marcaRepository.findAll());
+    public ResponseEntity<List<MarcaDTO>> findAllMarcas(){
+
+        List<MarcaEntity> marcas = marcaRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+        List<MarcaDTO> response = marcas.stream().map(MarcaMapper.INSTANCE::fromEntity).toList();
+        return ResponseEntity.ok(response);
     }
 
     //CREATE
