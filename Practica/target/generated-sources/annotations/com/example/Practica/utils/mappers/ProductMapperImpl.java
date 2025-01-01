@@ -113,7 +113,7 @@ public class ProductMapperImpl implements ProductMapper {
 
         Set<String> nombre = null;
 
-        CategoryDTO categoryDTO = new CategoryDTO( id, nombre, descripcion, created_at, updated_at );
+        CategoryDTO categoryDTO = new CategoryDTO( id, categoria, descripcion, created_at, updated_at );
 
         return categoryDTO;
     }

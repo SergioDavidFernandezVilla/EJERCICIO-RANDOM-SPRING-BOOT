@@ -1,10 +1,10 @@
 package com.example.Practica.presentation.controller.dto;
 
-import java.util.Set;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({"id", "nombre", "descripcion", "created_at", "updated_at" })
-public record CategoryDTO(Long id, Set<String> nombre, String descripcion , String created_at, String updated_at) {
+@JsonPropertyOrder({"id", "categoria", "descripcion", "created_at", "updated_at" })
+public record CategoryDTO(Long id, List<String> categoria, String descripcion , String created_at, String updated_at) {
     
 }

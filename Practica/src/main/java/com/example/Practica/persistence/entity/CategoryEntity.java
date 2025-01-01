@@ -1,8 +1,9 @@
 package com.example.Practica.persistence.entity;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,7 +12,6 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,8 +32,8 @@ public class CategoryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "El campo 'categoria' no puede estar vacío.")
-    private Set<String> categoria;
+    @ElementCollection
+    private List<String> categoria;
 
     @Size(max = 50, message = "La descripcion de la categoria no puede tener más de 50 caracteres")
     @NotBlank(message = "La marca es obligatoria")
