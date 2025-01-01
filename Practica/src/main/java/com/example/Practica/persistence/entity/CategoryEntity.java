@@ -1,11 +1,13 @@
 package com.example.Practica.persistence.entity;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -35,4 +37,11 @@ public class CategoryEntity {
     @Size(max = 50, message = "La descripcion de la categoria no puede tener más de 50 caracteres")
     @NotBlank(message = "La marca es obligatoria")
     private String descripcion;
+
+    private LocalDateTime created_at;
+
+    @PrePersist
+    protected void onCreate() {
+        this.created_at = LocalDateTime.now();
+    }
 }
