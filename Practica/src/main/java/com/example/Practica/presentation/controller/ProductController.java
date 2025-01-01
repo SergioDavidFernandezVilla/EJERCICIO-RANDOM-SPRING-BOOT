@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.example.Practica.presentation.controller.dto.ProductDTO;
 import com.example.Practica.services.ProductService;
+import com.example.Practica.utils.messageResponse.ApiResponse;
 
 import jakarta.validation.Valid;
 
@@ -33,9 +35,34 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<ProductDTO>> findAllProducts(){
-        List<ProductDTO> response = productService.findAllProducts();
-        return ResponseEntity.ok(response);
+    public ResponseEntity<ApiResponse> findAllProducts() {
+        try {
+            // Llamamos al servicio para obtener los productos
+            List<ProductDTO> response = productService.findAllProducts();
+            
+            // Retornamos la respuesta exitosa con la lista de productos
+            ApiResponse apiResponse = ApiResponse.builder()
+                    .message("Productos obtenidos exitosamente")
+                    .status("success")
+                    .data(response)
+                    .statusCode(200)
+                    .error(null)
+                    .build();
+
+            return ResponseEntity.ok(apiResponse);
+
+        } catch (Exception e) {
+            // En caso de error, devolvemos una respuesta con el error
+            ApiResponse apiResponse = ApiResponse.builder()
+                    .message("Error al obtener los productos")
+                    .status("error")
+                    .data(null)
+                    .statusCode(500)
+                    .error(e.getMessage())
+                    .build();
+
+            return ResponseEntity.status(500).body(apiResponse);
+        }
     }
 
     @GetMapping("/{id}")
