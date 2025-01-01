@@ -2,7 +2,6 @@ package com.example.Practica.presentation.controller.dto;
 
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({ "id", "nombre", "descripcion", "precio", "created_at", "updated_at" })
@@ -11,9 +10,9 @@ public record ProductDTO(
     String nombre, 
     String descripcion, 
     double precio,
-    @JsonProperty("created_at") LocalDateTime createdAt, 
+    LocalDateTime created_at, 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonProperty("updated_at") LocalDateTime updatedAt // Si lo planeas usar
+    LocalDateTime updated_at // Si lo planeas usar
 ){
     public ProductDTO {
         if (precio < 0) {

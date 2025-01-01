@@ -12,7 +12,7 @@ public interface ProductMapper {
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
     ProductDTO fromEntity(ProductEntity producto);
-
+    
     ProductEntity fromDTO(ProductDTO producto);
 
 }
