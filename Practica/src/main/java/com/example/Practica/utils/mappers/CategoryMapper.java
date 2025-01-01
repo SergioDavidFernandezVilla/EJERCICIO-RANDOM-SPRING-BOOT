@@ -14,14 +14,9 @@ public interface CategoryMapper {
     CategoryMapper INSTANCE = Mappers.getMapper(CategoryMapper.class);
 
     // Mapeo de CategoryEntity a CategoryDTO
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "nombre", target = "nombre")
-    @Mapping(source = "descripcion", target = "descripcion")
-    CategoryDTO fromEntity(CategoryEntity categoria);
+    @Mapping(target = "id", ignore = true)
+    CategoryDTO fromEntity(CategoryEntity categoryEntity);
 
     // Mapeo de CategoryDTO a CategoryEntity
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "nombre", target = "nombre")
-    @Mapping(source = "descripcion", target = "descripcion")
-    CategoryEntity fromDTO(CategoryDTO categoria);
+    CategoryEntity fromDTO(CategoryDTO categoryDTO);
 }

@@ -8,14 +8,13 @@ import com.example.Practica.presentation.controller.dto.MarcaDTO;
 import com.example.Practica.presentation.controller.dto.ProductDTO;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-01T04:33:45+0000",
+    date = "2025-01-01T05:27:32+0000",
     comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.41.0.v20241217-1506, environment: Java 17.0.13 (Eclipse Adoptium)"
 )
 @Component
@@ -99,16 +98,11 @@ public class ProductMapperImpl implements ProductMapper {
         }
 
         Long id = null;
-        Set<String> nombre = null;
         String descripcion = null;
         String created_at = null;
         String updated_at = null;
 
         id = categoryEntity.getId();
-        Set<String> set = categoryEntity.getNombre();
-        if ( set != null ) {
-            nombre = new LinkedHashSet<String>( set );
-        }
         descripcion = categoryEntity.getDescripcion();
         if ( categoryEntity.getCreated_at() != null ) {
             created_at = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( categoryEntity.getCreated_at() );
@@ -116,6 +110,8 @@ public class ProductMapperImpl implements ProductMapper {
         if ( categoryEntity.getUpdated_at() != null ) {
             updated_at = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( categoryEntity.getUpdated_at() );
         }
+
+        Set<String> nombre = null;
 
         CategoryDTO categoryDTO = new CategoryDTO( id, nombre, descripcion, created_at, updated_at );
 
@@ -134,10 +130,6 @@ public class ProductMapperImpl implements ProductMapper {
         }
         categoryEntity.descripcion( categoryDTO.descripcion() );
         categoryEntity.id( categoryDTO.id() );
-        Set<String> set = categoryDTO.nombre();
-        if ( set != null ) {
-            categoryEntity.nombre( new LinkedHashSet<String>( set ) );
-        }
         if ( categoryDTO.updated_at() != null ) {
             categoryEntity.updated_at( LocalDateTime.parse( categoryDTO.updated_at() ) );
         }
