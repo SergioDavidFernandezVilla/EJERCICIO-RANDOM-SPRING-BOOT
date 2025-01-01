@@ -33,7 +33,7 @@ public class CategoryEntity {
     private Long id;
 
     @ElementCollection
-    private List<String> categoria;
+    private String categoria;
 
     @Size(max = 50, message = "La descripcion de la categoria no puede tener más de 50 caracteres")
     @NotBlank(message = "La marca es obligatoria")
