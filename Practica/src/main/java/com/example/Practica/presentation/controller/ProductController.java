@@ -48,13 +48,22 @@ public class ProductController {
 
             // Llamamos al servicio para obtener los productos
             Page<ProductDTO> response = productService.findAllProducts(pageable);
+
+            // Construimos la respuesta con los datos de la página
+            ApiResponse.Pagination pagination = new ApiResponse.Pagination(
+                    response.getNumber(),
+                    response.getTotalPages(),
+                    response.getSize(),
+                    response.getTotalElements()
+            );
             
             // Retornamos la respuesta exitosa con la lista de productos
             ApiResponse apiResponse = ApiResponse.builder()
                     .message("Productos obtenidos exitosamente")
+                    .statusCode(200)
                     .status("success")
                     .data(response.getContent())  // Los productos actuales en la página
-                    .statusCode(200)
+                    .pagination(pagination)  // Añadimos la paginación
                     .error(null)
                     .build();
 
