@@ -14,4 +14,13 @@ public record ProductDTO(
     @JsonProperty("created_at") LocalDateTime createdAt, 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty("updated_at") LocalDateTime updatedAt // Si lo planeas usar
-) {}
+){
+    public ProductDTO {
+        if (precio < 0) {
+            throw new IllegalArgumentException("El precio no puede ser negativo");
+        }
+        if (nombre == null || nombre.isBlank()) {
+            throw new IllegalArgumentException("El nombre no puede estar vacío");
+        }
+    }
+}

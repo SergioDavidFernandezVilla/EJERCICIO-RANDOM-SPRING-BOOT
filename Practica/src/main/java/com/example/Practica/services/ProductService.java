@@ -31,11 +31,9 @@ public class ProductService {
 
     // GET BY ID
     public ProductDTO findByIdProduct(ProductDTO productDTO) {
-        if (!productRepository.existsById(productDTO.id())) {
-            throw new IllegalArgumentException("El producto con id " + productDTO.id() + " no existe");
-        }
-
-        ProductEntity product = productRepository.findById(productDTO.id()).get();
+        ProductEntity product = productRepository.findById(productDTO.id())
+                .orElseThrow(
+                        () -> new IllegalArgumentException("El producto con id " + productDTO.id() + " no existe"));
         return ProductMapper.INSTANCE.fromEntity(product);
     }
 
@@ -53,15 +51,12 @@ public class ProductService {
     @Transactional
     public ProductDTO updateProduct(ProductDTO productDTO) {
 
-        if (!productRepository.existsById(productDTO.id())) {
-            throw new IllegalArgumentException("El producto con id " + productDTO.id() + " no existe");
-        }
+        productRepository.findById(productDTO.id())
+                .orElseThrow(
+                        () -> new IllegalArgumentException("El producto con id " + productDTO.id() + " no existe"));
 
-        ProductEntity product = productRepository.findById(productDTO.id()).get();
-        product.setNombre(productDTO.nombre());
-        product.setPrecio(productDTO.precio());
-        product.setDescripcion(productDTO.descripcion());
-        return ProductMapper.INSTANCE.fromEntity(product);
+        ProductEntity updatedProduct = productRepository.save(ProductMapper.INSTANCE.fromDTO(productDTO));
+        return ProductMapper.INSTANCE.fromEntity(updatedProduct);
     }
 
     // METODO DELETE

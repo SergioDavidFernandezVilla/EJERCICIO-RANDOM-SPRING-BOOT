@@ -1,6 +1,8 @@
 package com.example.Practica.presentation.controller;
 
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +30,12 @@ public class ProductController {
     @GetMapping("/status")
     public String status() {
         return "Service is running";
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<ProductDTO>> findAllProducts(){
+        List<ProductDTO> response = productService.findAllProducts();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
