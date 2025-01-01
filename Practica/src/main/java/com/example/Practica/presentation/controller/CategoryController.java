@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,14 +44,14 @@ public class CategoryController {
 
     // METODO CREATE
     @PostMapping
-    public ResponseEntity<CategoryDTO> createCategory(@Valid CategoryDTO categoryDTO){
+    public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody CategoryDTO categoryDTO){
         CategoryDTO responseDTO = categoryService.createCategory(categoryDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
     // METODO PUT
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id, CategoryDTO categoryDTO){
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO){
         CategoryDTO responseDTO = categoryService.updateCategory(id, categoryDTO);
         return ResponseEntity.ok(responseDTO);
     }
