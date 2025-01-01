@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.Practica.presentation.controller.dto.CategoryDTO;
 import com.example.Practica.services.CategoryService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
@@ -39,7 +41,7 @@ public class CategoryController {
 
     // METODO CREATE
     @PostMapping
-    public ResponseEntity<CategoryDTO> createCategory(CategoryDTO categoryDTO){
+    public ResponseEntity<CategoryDTO> createCategory(@Valid CategoryDTO categoryDTO){
         CategoryDTO responseDTO = categoryService.createCategory(categoryDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
