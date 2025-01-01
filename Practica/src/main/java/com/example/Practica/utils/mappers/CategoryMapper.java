@@ -18,5 +18,8 @@ public interface CategoryMapper {
     CategoryDTO fromEntity(CategoryEntity categoryEntity);
 
     // Mapeo de CategoryDTO a CategoryEntity
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "created_at", ignore = true)
+    @Mapping(target = "updated_at", ignore = true)
     CategoryEntity fromDTO(CategoryDTO categoryDTO);
 }

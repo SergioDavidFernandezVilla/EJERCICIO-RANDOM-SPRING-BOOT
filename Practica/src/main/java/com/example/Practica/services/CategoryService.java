@@ -1,5 +1,6 @@
 package com.example.Practica.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Sort;
@@ -10,20 +11,21 @@ import com.example.Practica.persistence.repository.CategoryRepository;
 import com.example.Practica.presentation.controller.dto.CategoryDTO;
 import com.example.Practica.utils.mappers.CategoryMapper;
 
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class CategoryService {
     
-    private CategoryRepository categoryRepository;
-
-    public CategoryService(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
+    private final CategoryRepository categoryRepository;
 
     // METODO ALL
     public List<CategoryDTO> findAllCategories(){
-        List<CategoryEntity> categories = categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
-        List<CategoryDTO> response = categories.stream().map(CategoryMapper.INSTANCE::fromEntity).toList();
-        return response;
+        return categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "id"))
+        .stream()
+        .map(CategoryMapper.INSTANCE::fromEntity)
+        .toList();
     }
 
     // METODO BY ID
@@ -34,27 +36,30 @@ public class CategoryService {
     }
 
     // METODO CREATE
+    @Transactional
     public CategoryDTO createCategory(CategoryDTO categoryDTO){
         CategoryEntity category = CategoryMapper.INSTANCE.fromDTO(categoryDTO);
         CategoryEntity categorySaved = categoryRepository.save(category);
-        CategoryDTO responseDTO = CategoryMapper.INSTANCE.fromEntity(categorySaved);
-        return responseDTO;
+        return CategoryMapper.INSTANCE.fromEntity(categorySaved);
     }
     
     // METODO PUT
-    public CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO){
+    @Transactional
+    public CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO) {
         return categoryRepository.findById(id)
-            .map(category -> {
-                category.setCategoria(categoryDTO.categoria());
-                category.setDescripcion(categoryDTO.descripcion());
-                CategoryEntity categoryUpdated = categoryRepository.save(category);
-                CategoryDTO responseDTO = CategoryMapper.INSTANCE.fromEntity(categoryUpdated);
-                return responseDTO;
-            })
-            .orElseThrow();
+                .map(category -> {
+                    category.setCategoria(categoryDTO.categoria());
+                    category.setDescripcion(categoryDTO.descripcion());
+                    category.setUpdated_at(LocalDateTime.now());
+                    return categoryRepository.save(category);
+                })
+                .map(CategoryMapper.INSTANCE::fromEntity)
+                .orElseThrow();
     }
 
+
     // METODO DELETE
+    @Transactional
     public void deleteCategory(Long id){
         categoryRepository.deleteById(id);
     }
