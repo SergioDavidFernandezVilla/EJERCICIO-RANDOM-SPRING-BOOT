@@ -4,22 +4,35 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 @JsonPropertyOrder({ "id", "nombre", "descripcion", "precio", "created_at", "updated_at" })
 public record ProductDTO(
-    Long id, 
+    Long id,
+
+    @NotBlank(message = "El nombre es obligatorio")
+    @Size(max = 100, message = "El nombre de un producto no puede tener más de 100 caracteres")
     String nombre, 
-    String descripcion, 
+
+    @NotBlank(message = "La descripción es obligatoria")
+    @Size(max = 255, message = "La descripción de un producto no puede tener más de 255 caracteres")
+    String descripcion,
+    
+    @Positive(message = "El precio debe ser positivo")
     double precio,
-    LocalDateTime created_at, 
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime updated_at // Si lo planeas usar
-){
+    LocalDateTime created_at, 
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    LocalDateTime updated_at 
+) {
+    // Constructor compacto opcional si necesitas validaciones personalizadas.
     public ProductDTO {
         if (precio < 0) {
             throw new IllegalArgumentException("El precio no puede ser negativo");
-        }
-        if (nombre == null || nombre.isBlank()) {
-            throw new IllegalArgumentException("El nombre no puede estar vacío");
         }
     }
 }
