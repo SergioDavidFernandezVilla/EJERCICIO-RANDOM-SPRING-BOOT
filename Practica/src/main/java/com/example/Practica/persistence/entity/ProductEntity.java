@@ -9,7 +9,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -39,8 +41,8 @@ public class ProductEntity {
     @NotBlank(message = "La descripción es obligatoria")
     private String descripcion;
 
-    @PositiveOrZero(message = "El precio de un producto, debe ser un valor positivo o cero")
-    @NotBlank(message = "El precio es obligatorio")
+    @NotNull(message = "El precio no puede ser nulo")
+    @DecimalMin(value = "0.0", inclusive = false, message = "El precio debe ser mayor que 0")
     private double precio;
 
     private LocalDateTime created_at;
