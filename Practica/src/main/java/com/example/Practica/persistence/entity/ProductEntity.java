@@ -3,6 +3,7 @@ package com.example.Practica.persistence.entity;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -51,11 +52,11 @@ public class ProductEntity {
     
     private LocalDateTime updated_at;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "categoria_id")
     private CategoryEntity categoria;
-
-    @ManyToOne
+    
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "marca_id")
     private MarcaEntity marca;
 
