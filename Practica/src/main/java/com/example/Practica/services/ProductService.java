@@ -9,7 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.example.Practica.persistence.entity.ProductEntity;
 import com.example.Practica.persistence.repository.ProductRepository;
+import com.example.Practica.presentation.controller.dto.CategoryDTO;
+import com.example.Practica.presentation.controller.dto.MarcaDTO;
 import com.example.Practica.presentation.controller.dto.ProductDTO;
+import com.example.Practica.utils.mappers.CategoryMapper;
+import com.example.Practica.utils.mappers.MarcaMapper;
 import com.example.Practica.utils.mappers.ProductMapper;
 
 import jakarta.transaction.Transactional;
@@ -25,8 +29,32 @@ public class ProductService {
 
     // GET ALL WITH PAGINATION
     public Page<ProductDTO> findAllProducts(Pageable pageable) {
+        // Obtener todos los productos con paginación
         Page<ProductEntity> products = productRepository.findAll(pageable);
-        return products.map(ProductMapper.INSTANCE::fromEntity);
+    
+        // Mapear las entidades a DTOs con las relaciones de categoria y marca
+        return products.map(product -> {
+            // Mapear el producto a DTO
+            ProductDTO productDTO = ProductMapper.INSTANCE.fromEntity(product);
+            
+            // Mapear las relaciones de categoria y marca
+            // Ya que ProductDTO tiene las propiedades de categoria y marca directamente,
+            // no es necesario usar setters, se incluyen al momento de crear el ProductDTO
+            CategoryDTO categoryDTO = CategoryMapper.INSTANCE.fromEntity(product.getCategoria());
+            MarcaDTO marcaDTO = MarcaMapper.INSTANCE.fromEntity(product.getMarca());
+            
+            // Devolvemos el productDTO con las relaciones mapeadas
+            return new ProductDTO(
+                productDTO.id(), 
+                productDTO.nombre(), 
+                productDTO.descripcion(), 
+                productDTO.precio(),
+                productDTO.created_at(), 
+                productDTO.updated_at(),
+                categoryDTO, // Asignamos categoria
+                marcaDTO // Asignamos marca
+            );
+        });
     }
 
     // GET BY ID

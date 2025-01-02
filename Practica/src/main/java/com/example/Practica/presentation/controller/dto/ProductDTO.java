@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
-@JsonPropertyOrder({ "id", "nombre", "descripcion", "precio", "created_at", "updated_at" })
+@JsonPropertyOrder({ "id", "nombre", "descripcion", "precio", "created_at", "updated_at", "categoria", "marca" })
 public record ProductDTO(
     Long id,
 
@@ -30,7 +30,10 @@ public record ProductDTO(
     LocalDateTime created_at, 
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime updated_at 
+    LocalDateTime updated_at,
+
+    CategoryDTO categoria, // Referencia a la clase externa
+    MarcaDTO marca          // Referencia a la clase externa
 ) {
     // Constructor compacto opcional si necesitas validaciones personalizadas.
     public ProductDTO {
