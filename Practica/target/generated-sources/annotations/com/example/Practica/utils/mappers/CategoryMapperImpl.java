@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-02T01:15:55+0000",
+    date = "2025-01-02T02:08:33+0000",
     comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.41.0.v20241217-1506, environment: Java 17.0.13 (Eclipse Adoptium)"
 )
 @Component
@@ -21,11 +21,13 @@ public class CategoryMapperImpl implements CategoryMapper {
             return null;
         }
 
+        Long id = null;
         String categoria = null;
         String descripcion = null;
         String created_at = null;
         String updated_at = null;
 
+        id = categoryEntity.getId();
         categoria = categoryEntity.getCategoria();
         descripcion = categoryEntity.getDescripcion();
         if ( categoryEntity.getCreated_at() != null ) {
@@ -34,8 +36,6 @@ public class CategoryMapperImpl implements CategoryMapper {
         if ( categoryEntity.getUpdated_at() != null ) {
             updated_at = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( categoryEntity.getUpdated_at() );
         }
-
-        Long id = null;
 
         CategoryDTO categoryDTO = new CategoryDTO( id, categoria, descripcion, created_at, updated_at );
 

@@ -14,7 +14,6 @@ public interface CategoryMapper {
     CategoryMapper INSTANCE = Mappers.getMapper(CategoryMapper.class);
 
     // Mapeo de CategoryEntity a CategoryDTO
-    @Mapping(target = "id", ignore = true)
     CategoryDTO fromEntity(CategoryEntity categoryEntity);
 
     // Mapeo de CategoryDTO a CategoryEntity
