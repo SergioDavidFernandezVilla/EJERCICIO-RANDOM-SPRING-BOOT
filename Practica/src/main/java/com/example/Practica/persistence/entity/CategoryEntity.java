@@ -47,6 +47,8 @@ public class CategoryEntity {
     @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY)
     private Set<ProductEntity> productos; // Relación inversa con "ProductEntity"
 
+    
+
     @PrePersist
     protected void onCreate() {
         this.created_at = LocalDateTime.now();
