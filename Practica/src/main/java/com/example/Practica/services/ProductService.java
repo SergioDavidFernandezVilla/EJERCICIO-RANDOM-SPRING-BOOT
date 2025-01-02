@@ -27,32 +27,30 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    // GET ALL WITH PAGINATION
+    // Método de paginación con las relaciones cargadas
     public Page<ProductDTO> findAllProducts(Pageable pageable) {
-        // Obtener todos los productos con paginación
-        Page<ProductEntity> products = productRepository.findAll(pageable);
-    
+        // Obtener los productos con las relaciones de categoria y marca
+        Page<ProductEntity> products = productRepository.findAllWithCategoryAndBrand(pageable);
+
         // Mapear las entidades a DTOs con las relaciones de categoria y marca
         return products.map(product -> {
             // Mapear el producto a DTO
             ProductDTO productDTO = ProductMapper.INSTANCE.fromEntity(product);
             
             // Mapear las relaciones de categoria y marca
-            // Ya que ProductDTO tiene las propiedades de categoria y marca directamente,
-            // no es necesario usar setters, se incluyen al momento de crear el ProductDTO
             CategoryDTO categoryDTO = CategoryMapper.INSTANCE.fromEntity(product.getCategoria());
             MarcaDTO marcaDTO = MarcaMapper.INSTANCE.fromEntity(product.getMarca());
             
-            // Devolvemos el productDTO con las relaciones mapeadas
+            // Devolver el ProductDTO con las relaciones mapeadas
             return new ProductDTO(
-                productDTO.id(), 
-                productDTO.nombre(), 
-                productDTO.descripcion(), 
+                productDTO.id(),
+                productDTO.nombre(),
+                productDTO.descripcion(),
                 productDTO.precio(),
-                productDTO.created_at(), 
+                productDTO.created_at(),
                 productDTO.updated_at(),
-                categoryDTO, // Asignamos categoria
-                marcaDTO // Asignamos marca
+                categoryDTO,  // Asignar categoria
+                marcaDTO      // Asignar marca
             );
         });
     }

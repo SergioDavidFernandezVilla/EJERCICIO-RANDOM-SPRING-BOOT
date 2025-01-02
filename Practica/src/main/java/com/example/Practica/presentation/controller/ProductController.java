@@ -1,6 +1,5 @@
 package com.example.Practica.presentation.controller;
 
-
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -42,35 +41,33 @@ public class ProductController {
     public ResponseEntity<ApiResponse> findAllProducts(@RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         try {
+            // Crear el objeto Pageable con la página y el tamaño
+            Pageable pageable = PageRequest.of(page, size);
 
-             // Creamos el objeto Pageable con el número de página y tamaño
-             Pageable pageable = PageRequest.of(page, size);
-
-            // Llamamos al servicio para obtener los productos
+            // Llamar al servicio para obtener los productos con sus relaciones
             Page<ProductDTO> response = productService.findAllProducts(pageable);
 
-            // Construimos la respuesta con los datos de la página
+            // Construir la respuesta con los datos de paginación
             ApiResponse.Pagination pagination = new ApiResponse.Pagination(
                     response.getNumber(),
                     response.getTotalPages(),
                     response.getSize(),
-                    response.getTotalElements()
-            );
-            
-            // Retornamos la respuesta exitosa con la lista de productos
+                    response.getTotalElements());
+
+            // Retornar la respuesta exitosa con los productos y la paginación
             ApiResponse apiResponse = ApiResponse.builder()
                     .message("Productos obtenidos exitosamente")
                     .statusCode(200)
                     .status("success")
-                    .data(response.getContent())  // Los productos actuales en la página
-                    .pagination(pagination)  // Añadimos la paginación
+                    .data(response.getContent()) // Los productos de la página
+                    .pagination(pagination) // Incluir la paginación
                     .error(null)
                     .build();
 
             return ResponseEntity.ok(apiResponse);
 
         } catch (Exception e) {
-            // En caso de error, devolvemos una respuesta con el error
+            // Si hay un error, devolver una respuesta de error
             ApiResponse apiResponse = ApiResponse.builder()
                     .message("Error al obtener los productos")
                     .status("error")
@@ -84,28 +81,28 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> findByIdProduct(@Valid @RequestBody ProductDTO productDTO){
+    public ResponseEntity<ProductDTO> findByIdProduct(@Valid @RequestBody ProductDTO productDTO) {
         ProductDTO responseDTO = productService.findByIdProduct(productDTO);
         return ResponseEntity.ok(responseDTO);
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO){
+    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO) {
         ProductDTO responseDTO = productService.createProduct(productDTO);
         return ResponseEntity.ok(responseDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> updateByProduct(@PathVariable Long id, @Valid @RequestBody ProductDTO productDTO){
+    public ResponseEntity<ProductDTO> updateByProduct(@PathVariable Long id,
+            @Valid @RequestBody ProductDTO productDTO) {
         ProductDTO product = productService.updateProduct(productDTO);
-        return ResponseEntity.ok(product);    
+        return ResponseEntity.ok(product);
     }
-    
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id){
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
-
 
 }

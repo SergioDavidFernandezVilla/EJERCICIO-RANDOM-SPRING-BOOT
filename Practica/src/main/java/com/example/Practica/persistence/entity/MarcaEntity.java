@@ -1,12 +1,15 @@
 package com.example.Practica.persistence.entity;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -42,8 +45,10 @@ public class MarcaEntity {
 
 
     private LocalDateTime created_at;
-
     private LocalDateTime updated_at;
+
+    @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY)
+    private Set<ProductEntity> productos; // Relación inversa con "ProductEntity"
 
     @PrePersist
     protected void onCreate() {

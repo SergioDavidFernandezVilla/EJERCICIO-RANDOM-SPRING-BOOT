@@ -52,13 +52,14 @@ public class ProductEntity {
     
     private LocalDateTime updated_at;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "categoria_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoria_id") // Relación con la tabla "categoria"
     private CategoryEntity categoria;
-    
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "marca_id")
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "marca_id") // Relación con la tabla "marca"
     private MarcaEntity marca;
+
 
     @PrePersist
     protected void onCreate() {
