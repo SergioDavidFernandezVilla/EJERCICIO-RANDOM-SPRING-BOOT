@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-02T00:36:06+0000",
+    date = "2025-01-02T00:39:54+0000",
     comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.41.0.v20241217-1506, environment: Java 17.0.13 (Eclipse Adoptium)"
 )
 @Component
@@ -68,6 +68,35 @@ public class ProductMapperImpl implements ProductMapper {
         productEntity.updated_at( product.updated_at() );
 
         return productEntity.build();
+    }
+
+    @Override
+    public ProductDTO fromEntityWithRelations(ProductEntity product) {
+        if ( product == null ) {
+            return null;
+        }
+
+        CategoryDTO categoria = null;
+        MarcaDTO marca = null;
+        Long id = null;
+        String nombre = null;
+        String descripcion = null;
+        Double precio = null;
+        LocalDateTime created_at = null;
+        LocalDateTime updated_at = null;
+
+        categoria = fromEntity( product.getCategoria() );
+        marca = fromEntity( product.getMarca() );
+        id = product.getId();
+        nombre = product.getNombre();
+        descripcion = product.getDescripcion();
+        precio = product.getPrecio();
+        created_at = product.getCreated_at();
+        updated_at = product.getUpdated_at();
+
+        ProductDTO productDTO = new ProductDTO( id, nombre, descripcion, precio, created_at, updated_at, categoria, marca );
+
+        return productDTO;
     }
 
     @Override
