@@ -7,7 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.example.Practica.persistence.entity.CategoryEntity;
+import com.example.Practica.persistence.entity.MarcaEntity;
 import com.example.Practica.persistence.entity.ProductEntity;
+import com.example.Practica.persistence.repository.CategoryRepository;
+import com.example.Practica.persistence.repository.MarcaRepository;
 import com.example.Practica.persistence.repository.ProductRepository;
 import com.example.Practica.presentation.controller.dto.CategoryDTO;
 import com.example.Practica.presentation.controller.dto.MarcaDTO;
@@ -22,9 +26,13 @@ import jakarta.transaction.Transactional;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final MarcaRepository marcaRepository;
+    private final CategoryRepository categoryRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository , MarcaRepository marcaRepository, CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
+        this.marcaRepository = marcaRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     // Método de paginación con las relaciones cargadas
@@ -67,9 +75,24 @@ public class ProductService {
     @Transactional
     public ProductDTO createProduct(ProductDTO productDTO) {
 
-        // Crear una instancia de ProductEntity a partir del DTO
+        // Buscar la marca y la categoría en la base de datos por su ID
+        MarcaEntity marca = marcaRepository.findById(productDTO.marca().id())
+                .orElseThrow(() -> new IllegalArgumentException("La marca con ID " + productDTO.marca().id() + " no existe"));
+    
+        CategoryEntity categoria = categoryRepository.findById(productDTO.categoria().id())
+                .orElseThrow(() -> new IllegalArgumentException("La categoría con ID " + productDTO.categoria().id() + " no existe"));
+    
+        // Crear la entidad de producto a partir del DTO
         ProductEntity product = ProductMapper.INSTANCE.fromDTO(productDTO);
+    
+        // Asignar la marca y la categoría al producto
+        product.setMarca(marca);
+        product.setCategoria(categoria);
+    
+        // Guardar el producto en la base de datos
         ProductEntity productSaved = productRepository.save(product);
+    
+        // Mapear y devolver el DTO con el producto guardado
         return ProductMapper.INSTANCE.fromEntity(productSaved);
     }
 
