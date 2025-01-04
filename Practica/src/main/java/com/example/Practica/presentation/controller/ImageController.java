@@ -1,8 +1,15 @@
 package com.example.Practica.presentation.controller;
 
+import org.springframework.http.HttpHeaders;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.UrlResource;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.Practica.services.ImageService;
+
+import org.springframework.core.io.Resource;
 
 @RestController
 @RequestMapping("/upload/image")
@@ -21,6 +30,28 @@ public class ImageController {
     public ImageController(ImageService imageService) {
         this.imageService = imageService;
     }
+
+    @GetMapping
+    public ResponseEntity<Resource> getImage() {
+        try {
+            // Ruta física del archivo (debe coincidir con donde se almacenó la imagen)
+            Path imagePath = Paths.get("uploads").resolve("imagen.jpg").normalize();
+            Resource resource = new UrlResource(imagePath.toUri());
+
+            if (!resource.exists()) {
+                return ResponseEntity.badRequest().body(null);
+            }
+
+            // Configuración de encabezados para mostrar la imagen
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_TYPE, "image/jpeg") // Cambia "image/jpeg" si es PNG u otro formato
+                    .body(resource);
+
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(null);
+        }
+    }
+
 
     // CREATE
     @PostMapping
