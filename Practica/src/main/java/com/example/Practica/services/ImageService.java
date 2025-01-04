@@ -80,7 +80,7 @@ public class ImageService {
     }
 
     public String getFileNameUrl(String fileName) {
-        ImageEntity image = imageRepository.findFileName(fileName);
+        ImageEntity image = imageRepository.findByFileName(fileName);
         if (image != null) {
             return image.getFilePath();
         }
