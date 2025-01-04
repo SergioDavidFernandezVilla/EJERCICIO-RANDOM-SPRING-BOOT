@@ -16,10 +16,10 @@ public class ImageService {
 
     private final ImageRepository imageRepository;
 
-    @Value("${app.upload.dir:uploads}")
+    @Value("${app.upload-dir}")
     private String uploadDir;
 
-    @Value("${app.base.url:http://localhost:8080}")
+    @Value("${app.base.url}")
     private String baseUrl;
 
     public ImageService(ImageRepository imageRepository) throws IOException {
