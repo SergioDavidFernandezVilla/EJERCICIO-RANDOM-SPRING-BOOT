@@ -8,4 +8,5 @@ import com.example.Practica.persistence.entity.ImageEntity;
 @Repository
 public interface ImageRepository extends JpaRepository<ImageEntity, Long> {
     
+    ImageEntity findFileName(String fileName);
 }

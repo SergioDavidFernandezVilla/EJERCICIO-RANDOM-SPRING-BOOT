@@ -35,27 +35,24 @@ public class ImageController {
     }
 
     // Obtener la imagen
-    @GetMapping("/{fileName:.+}")
+    @GetMapping("/{filename}")
     public ResponseEntity<Resource> getImage(@PathVariable String fileName) {
         try {
-            String filePathString = imageService.getFileNameUrl(fileName);
+            
+            String filePath = imageService.getFileNameUrl(fileName);
+            Path path = Paths.get(filePath);
+            Resource resource = new UrlResource(path.toUri());
 
-            if (filePathString == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-            }
-
-            Path filePath = Paths.get(filePathString); // Usamos el valor que devuelve el servicio
-            UrlResource resource = new UrlResource(filePath.toUri());
-
-            if (resource.exists() || resource.isReadable()) {
+            if (resource.exists() && resource.isReadable()) {
                 return ResponseEntity.ok()
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                         .body(resource);
             } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                return ResponseEntity.notFound().build();
             }
+
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.notFound().build();
         }
     }
 

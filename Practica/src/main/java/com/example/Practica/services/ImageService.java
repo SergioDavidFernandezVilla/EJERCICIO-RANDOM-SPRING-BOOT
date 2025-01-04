@@ -79,21 +79,12 @@ public class ImageService {
         return "/uploads/" + fileName; // Devuelve la URL relativa
     }
 
-    public String getFileNameUrl(String filename) throws IOException {
-        try {
-            if (filename == null || filename.trim().isEmpty()) {
-                return null;
-            }
-     
-            Path filePath = Paths.get(uploadDir).resolve(filename).normalize();
-     
-            if (Files.exists(filePath)) {
-                return baseUrl + "/uploads/" + filename;  // Aquí baseUrl debería contener "http://localhost:8080"
-            }
-     
-            return null;
-        } catch (Exception e) {
-            throw new IOException("Error al buscar el archivo en el sistema de archivos", e);
+    public String getFileNameUrl(String fileName) {
+        ImageEntity image = imageRepository.findFileName(fileName);
+        if (image != null) {
+            return image.getFilePath();
         }
+        return null;
     }
+
 }
