@@ -27,7 +27,8 @@ public class ImageController {
     public ResponseEntity<String> createImage(@RequestParam("image") MultipartFile file) {
         try {
             String fileName = imageService.saveImage(file);
-            return ResponseEntity.ok("Imagen subida exitosamente: " + fileName);
+            String imageUrl = "http://localhost:8080/uploads/" + fileName; // Ruta completa
+            return ResponseEntity.ok("Imagen subida exitosamente: " + imageUrl);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Error de validación: " + e.getMessage());
         } catch (Exception e) {

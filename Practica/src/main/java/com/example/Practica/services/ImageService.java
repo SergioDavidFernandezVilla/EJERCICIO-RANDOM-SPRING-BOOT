@@ -46,7 +46,7 @@ public class ImageService {
             imageRepository.save(image);
 
             // Dentro del método saveImage:
-            return baseUrl + "/images/" + fileName;
+            return fileName;
         } catch (IOException e) {
             // Manejo de errores al guardar el archivo
             throw new IOException("Error al guardar la imagen en el sistema de archivos", e);
@@ -73,5 +73,9 @@ public class ImageService {
 
     private String cleanFileName(String fileName) {
         return fileName.replaceAll("[^a-zA-Z0-9\\.\\-_]", "_");
+    }
+
+    public String getImageUrl(String fileName) {
+        return "/uploads/" + fileName; // Devuelve la URL relativa
     }
 }
