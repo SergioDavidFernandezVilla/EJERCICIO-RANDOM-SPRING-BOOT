@@ -29,10 +29,10 @@ public class ImageEntity {
     private String fileName;
     private String filePath;
 
-    private LocalDateTime uploadedA;
+    private LocalDateTime update_at;
 
-    public ImageEntity(LocalDateTime uploadedA) {
-        this.uploadedA = LocalDateTime.now();
+    public ImageEntity(LocalDateTime update_at) {
+        this.update_at = LocalDateTime.now();
     }
 
 
