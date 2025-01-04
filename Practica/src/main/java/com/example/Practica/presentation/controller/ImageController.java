@@ -16,8 +16,11 @@ import com.example.Practica.services.ImageService;
 @CrossOrigin(origins = "http://localhost:4200")
 public class ImageController {
     
-    @Autowired
     private ImageService imageService;
+
+    public ImageController(ImageService imageService) {
+        this.imageService = imageService;
+    }
 
     // CREATE
     @PostMapping
