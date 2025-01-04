@@ -2,6 +2,7 @@ package com.example.Practica.presentation.controller;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,25 +37,31 @@ public class ImageController {
 
     // Obtener la imagen
     @GetMapping("/{filename}")
-    public ResponseEntity<Resource> getImage(@PathVariable String fileName) {
-        try {
-            
-            String filePath = imageService.getFileNameUrl(fileName);
-            Path path = Paths.get(filePath);
-            Resource resource = new UrlResource(path.toUri());
+public ResponseEntity<Resource> getImage(@PathVariable String fileName) {
+    try {
+        // Obtener la ruta absoluta del archivo
+        String filePath = imageService.getFileNameUrl(fileName);
+        Path path = Paths.get(filePath);
+        Resource resource = new UrlResource(path.toUri());
 
-            if (resource.exists() && resource.isReadable()) {
-                return ResponseEntity.ok()
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                        .body(resource);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
+        System.out.println("URI del recurso: " + path.toUri());
+        System.out.println("Ruta del recurso: " + path.toString());
 
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+        // Validar que el archivo existe y es legible
+        if (resource.exists() && resource.isReadable()) {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG) // Ajusta al tipo MIME adecuado
+                    .body(resource);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(null);
         }
+    } catch (Exception e) {
+        e.printStackTrace(); // Registrar el error
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(null);
     }
+}
 
     // CREATE
     @PostMapping
