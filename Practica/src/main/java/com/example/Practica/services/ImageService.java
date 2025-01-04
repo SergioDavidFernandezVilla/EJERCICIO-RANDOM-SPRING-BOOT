@@ -1,9 +1,7 @@
 package com.example.Practica.services;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -21,35 +19,43 @@ public class ImageService {
     @Value("${app.upload.dir:uploads}")
     private String uploadDir;
 
+    @Value("${app.base.url:http://localhost:8080}")
+    private String baseUrl;
+
     public ImageService(ImageRepository imageRepository) throws IOException {
         this.imageRepository = imageRepository;
         // Crear el directorio de subida si no existe
+        createUploadDir();
+    }
+
+    public String saveImage(MultipartFile file) throws IOException {
+        validateFile(file);
+
+        String fileName = UUID.randomUUID().toString() + "_" + cleanFileName(file.getOriginalFilename());
+        Path filePath = Paths.get(uploadDir).resolve(fileName).normalize();
+
+        try {
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            ImageEntity image = new ImageEntity();
+            image.setFileName(fileName);
+            image.setFilePath(filePath.toString());
+            image.setType(file.getContentType());
+            imageRepository.save(image);
+
+            // Dentro del método saveImage:
+            return baseUrl + "/images/" + fileName;
+        } catch (IOException e) {
+            // Manejo de errores al guardar el archivo
+            throw new IOException("Error al guardar la imagen en el sistema de archivos", e);
+        }
+    }
+
+    private void createUploadDir() throws IOException {
         Path uploadPath = Paths.get(uploadDir);
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
-    }
-
-    public String saveImage(MultipartFile file) throws IOException {
-        // Validar el archivo
-        validateFile(file);
-
-        // Generar un nombre único para el archivo
-        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-        Path filePath = Paths.get(uploadDir).resolve(fileName).normalize();
-
-        // Guardar el archivo en el sistema de archivos
-        Files.copy(file.getInputStream(), filePath);
-
-        // Guardar la información de la imagen en la base de datos
-        ImageEntity image = new ImageEntity();
-        image.setFileName(fileName);
-        image.setFilePath(filePath.toString());
-        image.setType(file.getContentType());
-        imageRepository.save(image);
-
-        // Retornar el nombre del archivo o una URL de acceso
-        return fileName;
     }
 
     private void validateFile(MultipartFile file) {
@@ -61,5 +67,9 @@ public class ImageService {
         if (contentType == null || !contentType.startsWith("image/")) {
             throw new IllegalArgumentException("El archivo debe ser una imagen");
         }
+    }
+
+    private String cleanFileName(String fileName) {
+        return fileName.replaceAll("[^a-zA-Z0-9\\.\\-_]", "_");
     }
 }
