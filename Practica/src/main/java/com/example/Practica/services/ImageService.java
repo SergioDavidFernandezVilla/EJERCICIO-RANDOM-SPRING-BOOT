@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,7 +15,8 @@ import com.example.Practica.persistence.repository.ImageRepository;
 @Service
 public class ImageService {
 
-    private final ImageRepository imageRepository;
+    @Autowired
+    private ImageRepository imageRepository;
 
     @Value("${app.upload-dir}")
     private String uploadDir;
@@ -22,13 +24,13 @@ public class ImageService {
     @Value("${app.base.url}")
     private String baseUrl;
 
-    public ImageService(ImageRepository imageRepository) throws IOException {
-        this.imageRepository = imageRepository;
-        // Crear el directorio de subida si no existe
-        createUploadDir();
-    }
-
     public String saveImage(MultipartFile file) throws IOException {
+
+        // CREAR LA CARPETA SI NO EXISTE
+        if (!Files.exists(Paths.get(uploadDir))) {
+            Files.createDirectories(Paths.get(uploadDir));
+        }
+
         validateFile(file);
 
         String fileName = UUID.randomUUID().toString() + "_" + cleanFileName(file.getOriginalFilename());
