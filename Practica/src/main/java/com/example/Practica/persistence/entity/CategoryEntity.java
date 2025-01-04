@@ -50,13 +50,17 @@ public class CategoryEntity {
     
 
     @PrePersist
-    protected void onCreate() {
-        this.created_at = LocalDateTime.now();
-        this.updated_at = LocalDateTime.now();
+    public void prePersist() {
+        if (created_at == null) {
+            created_at = LocalDateTime.now();  // Se establece solo una vez en la creación.
+        }
+        if (updated_at == null) {
+            updated_at = LocalDateTime.now();  // Se establece en la creación también.
+        }
     }
 
     @PreUpdate
-    protected void onUpdate() {
-        this.updated_at = LocalDateTime.now();
+    public void preUpdate() {
+        updated_at = LocalDateTime.now();  // Se actualiza solo el campo 'updated_at' al actualizar la entidad.
     }
 }

@@ -48,16 +48,23 @@ public class MarcaEntity {
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
+    
+
+    @PreUpdate
+    public void preUpdate() {
+        updated_at = LocalDateTime.now();  // Se actualiza solo el campo 'updated_at' al actualizar la entidad.
+    }
+
     @OneToMany(mappedBy = "marca")  // Asegúrate de que la propiedad en ProductoEntity se llame 'marca'
     private List<ProductEntity> productos;
 
     @PrePersist
-    protected void onCreate() {
-        this.created_at = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updated_at = LocalDateTime.now();
+    public void prePersist() {
+        if (created_at == null) {
+            created_at = LocalDateTime.now();  // Se establece solo una vez en la creación.
+        }
+        if (updated_at == null) {
+            updated_at = LocalDateTime.now();  // Se establece en la creación también.
+        }
     }
 }
