@@ -38,19 +38,18 @@ public class ImageController {
     @GetMapping("/{fileName:.+}")
     public ResponseEntity<Resource> getImage(@PathVariable String fileName) {
         try {
-            // Obtener la URL del archivo utilizando el nombre
-            String fileUrl = imageService.getFileNameUrl(fileName);
-            
-            if (fileUrl == null) {
+            String filePathString = imageService.getFileNameUrl(fileName);
+
+            if (filePathString == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
-            
-            Path filePath = Paths.get(fileUrl);
+
+            Path filePath = Paths.get(filePathString); // Usamos el valor que devuelve el servicio
             UrlResource resource = new UrlResource(filePath.toUri());
-            
+
             if (resource.exists() || resource.isReadable()) {
                 return ResponseEntity.ok()
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
                         .body(resource);
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

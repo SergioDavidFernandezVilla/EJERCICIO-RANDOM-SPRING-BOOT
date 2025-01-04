@@ -81,23 +81,18 @@ public class ImageService {
 
     public String getFileNameUrl(String filename) throws IOException {
         try {
-            // Verificamos si el nombre del archivo es nulo o vacío
             if (filename == null || filename.trim().isEmpty()) {
-                return null; // Si el nombre es inválido, retornamos null
+                return null;
             }
-    
-            // Creamos la ruta completa del archivo en el directorio de carga
+     
             Path filePath = Paths.get(uploadDir).resolve(filename).normalize();
-    
-            // Verificamos si el archivo existe en el sistema de archivos
+     
             if (Files.exists(filePath)) {
-                // Si el archivo existe, retornamos la URL relativa
-                return baseUrl + "/uploads/" + filename;  // baseUrl se define en las propiedades del archivo de configuración
+                return baseUrl + "/uploads/" + filename;  // Aquí baseUrl debería contener "http://localhost:8080"
             }
-    
-            return null;  // Si el archivo no existe, retornamos null
+     
+            return null;
         } catch (Exception e) {
-            // Manejo de errores al obtener el archivo
             throw new IOException("Error al buscar el archivo en el sistema de archivos", e);
         }
     }
