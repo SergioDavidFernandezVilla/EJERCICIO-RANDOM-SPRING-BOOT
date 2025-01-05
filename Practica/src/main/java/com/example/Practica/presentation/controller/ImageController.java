@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.Practica.persistence.entity.ImageEntity;
+import com.example.Practica.presentation.controller.dto.ImageDTO;
 import com.example.Practica.services.ImageService;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,8 +30,8 @@ public class ImageController {
 
     // GET ALL
     @GetMapping("/all")
-    public ResponseEntity<List<ImageEntity>> getAllImages() {
-        return ResponseEntity.ok(imageService.getAllImages());
+    public ResponseEntity<List<ImageDTO>> getAllImages() {
+        return ResponseEntity.ok(imageService.findALlImages());
     }
 
     // Obtener la imagen

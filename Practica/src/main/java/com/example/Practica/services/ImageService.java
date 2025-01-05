@@ -7,11 +7,14 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.Practica.persistence.entity.ImageEntity;
 import com.example.Practica.persistence.repository.ImageRepository;
+import com.example.Practica.presentation.controller.dto.ImageDTO;
+import com.example.Practica.utils.mappers.ImageMapper;
 
 @Service
 public class ImageService {
@@ -85,7 +88,11 @@ public class ImageService {
         return null;
     }
 
-    public List<ImageEntity> getAllImages() {
-        return imageRepository.findAll();
-    }
+   // METODO ALL
+   public List<ImageDTO> findALlImages(){
+    return imageRepository.findAll(Sort.by(Sort.Direction.ASC, "id"))
+    .stream()
+    .map(ImageMapper.INSTANCE::fromEntity)
+    .toList();
+}
 }

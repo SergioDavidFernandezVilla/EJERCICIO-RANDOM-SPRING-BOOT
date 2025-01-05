@@ -2,17 +2,14 @@ package com.example.Practica.persistence.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -47,13 +44,6 @@ public class MarcaEntity {
 
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
-
-    
-
-    @PreUpdate
-    public void preUpdate() {
-        updated_at = LocalDateTime.now();  // Se actualiza solo el campo 'updated_at' al actualizar la entidad.
-    }
 
     @OneToMany(mappedBy = "marca")  // Asegúrate de que la propiedad en ProductoEntity se llame 'marca'
     private List<ProductEntity> productos;
