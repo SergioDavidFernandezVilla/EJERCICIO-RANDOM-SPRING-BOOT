@@ -63,7 +63,8 @@ public class ProductEntity {
     @JoinColumn(name = "marca_id")
     private MarcaEntity marca;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_id")
     private ImageEntity image;
     
     @PrePersist
