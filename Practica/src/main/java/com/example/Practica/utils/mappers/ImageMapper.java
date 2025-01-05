@@ -1,16 +1,16 @@
 package com.example.Practica.utils.mappers;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 import com.example.Practica.persistence.entity.ImageEntity;
 import com.example.Practica.presentation.controller.dto.ImageDTO;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ImageMapper {
     
-    // Convertir un DTO en una entidad
-    ImageEntity toEntity(ImageDTO dto);
+    ImageMapper INSTANCE = Mappers.getMapper(ImageMapper.class);
 
-    // Convertir una entidad en un DTO
-    ImageDTO toDTO(ImageEntity entity);
+    ImageDTO fromEntity(ImageEntity image);
+    ImageEntity fromDTO(ImageDTO image);
 }

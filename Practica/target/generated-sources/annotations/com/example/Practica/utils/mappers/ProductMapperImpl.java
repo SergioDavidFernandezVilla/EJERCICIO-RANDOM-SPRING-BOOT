@@ -1,9 +1,11 @@
 package com.example.Practica.utils.mappers;
 
 import com.example.Practica.persistence.entity.CategoryEntity;
+import com.example.Practica.persistence.entity.ImageEntity;
 import com.example.Practica.persistence.entity.MarcaEntity;
 import com.example.Practica.persistence.entity.ProductEntity;
 import com.example.Practica.presentation.controller.dto.CategoryDTO;
+import com.example.Practica.presentation.controller.dto.ImageDTO;
 import com.example.Practica.presentation.controller.dto.MarcaDTO;
 import com.example.Practica.presentation.controller.dto.ProductDTO;
 import java.time.LocalDateTime;
@@ -12,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-05T05:42:09+0000",
+    date = "2025-01-05T06:13:15+0000",
     comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.41.0.v20241217-1506, environment: Java 17.0.13 (Eclipse Adoptium)"
 )
 @Component
@@ -32,6 +34,7 @@ public class ProductMapperImpl implements ProductMapper {
         LocalDateTime updated_at = null;
         CategoryDTO categoria = null;
         MarcaDTO marca = null;
+        ImageDTO image = null;
 
         id = product.getId();
         nombre = product.getNombre();
@@ -41,8 +44,9 @@ public class ProductMapperImpl implements ProductMapper {
         updated_at = product.getUpdated_at();
         categoria = fromEntity( product.getCategoria() );
         marca = fromEntity( product.getMarca() );
+        image = imageEntityToImageDTO( product.getImage() );
 
-        ProductDTO productDTO = new ProductDTO( id, nombre, descripcion, precio, created_at, updated_at, categoria, marca );
+        ProductDTO productDTO = new ProductDTO( id, nombre, descripcion, precio, created_at, updated_at, categoria, marca, image );
 
         return productDTO;
     }
@@ -59,6 +63,7 @@ public class ProductMapperImpl implements ProductMapper {
         productEntity.created_at( product.created_at() );
         productEntity.descripcion( product.descripcion() );
         productEntity.id( product.id() );
+        productEntity.image( imageDTOToImageEntity( product.image() ) );
         productEntity.marca( fromDTO( product.marca() ) );
         productEntity.nombre( product.nombre() );
         if ( product.precio() != null ) {
@@ -83,6 +88,7 @@ public class ProductMapperImpl implements ProductMapper {
         Double precio = null;
         LocalDateTime created_at = null;
         LocalDateTime updated_at = null;
+        ImageDTO image = null;
 
         categoria = fromEntity( product.getCategoria() );
         marca = fromEntity( product.getMarca() );
@@ -92,8 +98,9 @@ public class ProductMapperImpl implements ProductMapper {
         precio = product.getPrecio();
         created_at = product.getCreated_at();
         updated_at = product.getUpdated_at();
+        image = imageEntityToImageDTO( product.getImage() );
 
-        ProductDTO productDTO = new ProductDTO( id, nombre, descripcion, precio, created_at, updated_at, categoria, marca );
+        ProductDTO productDTO = new ProductDTO( id, nombre, descripcion, precio, created_at, updated_at, categoria, marca, image );
 
         return productDTO;
     }
@@ -176,5 +183,43 @@ public class ProductMapperImpl implements ProductMapper {
         marcaEntity.updated_at( marca.updated_at() );
 
         return marcaEntity.build();
+    }
+
+    protected ImageDTO imageEntityToImageDTO(ImageEntity imageEntity) {
+        if ( imageEntity == null ) {
+            return null;
+        }
+
+        Long id = null;
+        String type = null;
+        String fileName = null;
+        String filePath = null;
+        LocalDateTime updated_at = null;
+
+        id = imageEntity.getId();
+        type = imageEntity.getType();
+        fileName = imageEntity.getFileName();
+        filePath = imageEntity.getFilePath();
+        updated_at = imageEntity.getUpdated_at();
+
+        ImageDTO imageDTO = new ImageDTO( id, type, fileName, filePath, updated_at );
+
+        return imageDTO;
+    }
+
+    protected ImageEntity imageDTOToImageEntity(ImageDTO imageDTO) {
+        if ( imageDTO == null ) {
+            return null;
+        }
+
+        ImageEntity.ImageEntityBuilder imageEntity = ImageEntity.builder();
+
+        imageEntity.fileName( imageDTO.fileName() );
+        imageEntity.filePath( imageDTO.filePath() );
+        imageEntity.id( imageDTO.id() );
+        imageEntity.type( imageDTO.type() );
+        imageEntity.updated_at( imageDTO.updated_at() );
+
+        return imageEntity.build();
     }
 }

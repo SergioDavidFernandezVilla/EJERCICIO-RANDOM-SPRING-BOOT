@@ -1,10 +1,7 @@
 package com.example.Practica.services;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.Practica.persistence.entity.CategoryEntity;
@@ -14,9 +11,11 @@ import com.example.Practica.persistence.repository.CategoryRepository;
 import com.example.Practica.persistence.repository.MarcaRepository;
 import com.example.Practica.persistence.repository.ProductRepository;
 import com.example.Practica.presentation.controller.dto.CategoryDTO;
+import com.example.Practica.presentation.controller.dto.ImageDTO;
 import com.example.Practica.presentation.controller.dto.MarcaDTO;
 import com.example.Practica.presentation.controller.dto.ProductDTO;
 import com.example.Practica.utils.mappers.CategoryMapper;
+import com.example.Practica.utils.mappers.ImageMapper;
 import com.example.Practica.utils.mappers.MarcaMapper;
 import com.example.Practica.utils.mappers.ProductMapper;
 
@@ -49,6 +48,8 @@ public class ProductService {
             CategoryDTO categoryDTO = CategoryMapper.INSTANCE.fromEntity(product.getCategoria());
             MarcaDTO marcaDTO = MarcaMapper.INSTANCE.fromEntity(product.getMarca());
             
+            ImageDTO imageDTO = ImageMapper.INSTANCE.fromEntity(product.getImage());
+
             // Devolver el ProductDTO con las relaciones mapeadas
             return new ProductDTO(
                 productDTO.id(),
@@ -58,7 +59,8 @@ public class ProductService {
                 productDTO.created_at(),
                 productDTO.updated_at(),
                 categoryDTO,  // Asignar categoria
-                marcaDTO      // Asignar marca
+                marcaDTO,      // Asignar marca
+                imageDTO
             );
         });
     }

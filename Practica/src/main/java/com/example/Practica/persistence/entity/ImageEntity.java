@@ -15,13 +15,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Setter
 @Getter
+@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Table(name = "images")
+@Entity
+@Table(name = "image")
 public class ImageEntity {
 
     @Id
@@ -33,6 +33,8 @@ public class ImageEntity {
 
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
+
+    
 
     @PrePersist
     public void prePersist() {

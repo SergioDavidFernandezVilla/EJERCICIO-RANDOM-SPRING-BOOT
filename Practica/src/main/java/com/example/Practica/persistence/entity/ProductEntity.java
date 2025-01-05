@@ -10,7 +10,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -60,6 +59,10 @@ public class ProductEntity {
     @ManyToOne
     @JoinColumn(name = "marca_id")  // Asegúrate de que la columna sea 'marca_id'
     private MarcaEntity marca;
+
+    @ManyToOne
+    @JoinColumn(name = "image_id")
+    private ImageEntity image;
 
     @PrePersist
     public void prePersist() {

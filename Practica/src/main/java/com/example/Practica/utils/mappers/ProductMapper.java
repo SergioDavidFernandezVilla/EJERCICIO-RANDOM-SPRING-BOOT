@@ -6,6 +6,7 @@ import org.mapstruct.factory.Mappers;
 
 import com.example.Practica.persistence.entity.ProductEntity;
 import com.example.Practica.persistence.entity.CategoryEntity;
+import com.example.Practica.persistence.entity.ImageEntity;
 import com.example.Practica.persistence.entity.MarcaEntity;
 
 import com.example.Practica.presentation.controller.dto.*;
@@ -32,5 +33,4 @@ public interface ProductMapper {
     // Mapeo de MarcaEntity a MarcaDTO
     MarcaDTO fromEntity(MarcaEntity marca);
     MarcaEntity fromDTO(MarcaDTO marca);
-
 }
