@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 @RequestMapping("/images")
 public class ImageController {
 
-    private ImageService imageService;
+    private final ImageService imageService;
 
     @Autowired
     public ImageController(ImageService imageService) {
@@ -47,22 +47,22 @@ public class ImageController {
                         .contentType(mediaType)
                         .body(resource);
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(null);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
         } catch (Exception e) {
             e.printStackTrace(); // Registrar el error
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
     // Crear y subir imagen
     @PostMapping("/upload")
-    public ResponseEntity<String> createImage(@RequestParam("image") MultipartFile file) {
+    public ResponseEntity<String> createImage(
+            @RequestParam("image") MultipartFile file,
+            @RequestParam("product_id") Long productId) {
         try {
             // Llamar al servicio para guardar la imagen
-            String fileName = imageService.saveImage(file);
+            String fileName = imageService.saveImage(file, productId);
             String imageUrl = "/images/uploads/" + fileName; // Ruta relativa
 
             // Retornar la URL relativa de la imagen guardada
