@@ -23,31 +23,28 @@ public class ImageService {
     private ImageRepository imageRepository;
 
     @Value("${app.upload-dir}")
-    private String uploadDir;
-
-    @Value("${app.base.url}")
-    private String baseUrl;
+    private String uploadDir; // Directorio donde se guardarán las imágenes
 
     public String saveImage(MultipartFile file) throws IOException {
         createUploadDir(); // Centralizamos la creación del directorio
         validateFile(file);
-    
+
         String fileName = UUID.randomUUID().toString() + "_" + cleanFileName(file.getOriginalFilename());
         Path filePath = Paths.get(uploadDir).resolve(fileName).normalize();
-    
+
         if (Files.exists(filePath)) {
             throw new IOException("Un archivo con este nombre ya existe: " + fileName);
         }
-    
+
         try {
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-    
+
             ImageEntity image = new ImageEntity();
             image.setFileName(fileName);
-            image.setFilePath(fileName); // Solo guardamos la ruta relativa
+            image.setFilePath(filePath.toString()); // Guardamos la ruta absoluta o relativa según lo requerido
             image.setType(file.getContentType());
             imageRepository.save(image);
-    
+
             return fileName;
         } catch (IOException e) {
             throw new IOException("Error al guardar la imagen", e);
@@ -73,11 +70,19 @@ public class ImageService {
     }
 
     private String cleanFileName(String fileName) {
-        return fileName.replaceAll("[^a-zA-Z0-9\\.\\-_]", "_");
+        if (fileName == null || fileName.trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre del archivo no puede estar vacío");
+        }
+        String cleanName = fileName.replaceAll("[^a-zA-Z0-9\\.\\-_]", "_");
+        if (!cleanName.matches(".+\\.(jpg|jpeg|png|gif|bmp|webp)$")) {
+            throw new IllegalArgumentException("El archivo debe tener una extensión de imagen válida");
+        }
+        return cleanName;
     }
 
     public String getImageUrl(String fileName) {
-        return "/uploads/" + fileName; // Devuelve la URL relativa
+        // Genera la URL relativa basada en la configuración de WebConfig
+        return "/uploads/" + fileName;
     }
 
     public String getFileNameUrl(String fileName) {
@@ -88,11 +93,10 @@ public class ImageService {
         return null;
     }
 
-   // METODO ALL
-   public List<ImageDTO> findALlImages(){
-    return imageRepository.findAll(Sort.by(Sort.Direction.ASC, "id"))
-    .stream()
-    .map(ImageMapper.INSTANCE::fromEntity)
-    .toList();
-}
+    public List<ImageDTO> findAllImages() {
+        return imageRepository.findAll(Sort.by(Sort.Direction.ASC, "id"))
+                .stream()
+                .map(ImageMapper.INSTANCE::fromEntity)
+                .toList();
+    }
 }

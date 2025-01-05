@@ -28,23 +28,20 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-    // GET ALL
+    // GET ALL - Listar todas las imágenes
     @GetMapping("/all")
     public ResponseEntity<List<ImageDTO>> getAllImages() {
-        return ResponseEntity.ok(imageService.findALlImages());
+        return ResponseEntity.ok(imageService.findAllImages());
     }
 
-    // Obtener la imagen
+    // Obtener una imagen por su nombre
     @GetMapping("/uploads/{fileName:.*}")
     public ResponseEntity<Resource> getImage(@PathVariable String fileName) {
         try {
-            // Obtener la ruta absoluta del archivo
+            // Obtener la ruta completa de la imagen
             String filePath = imageService.getFileNameUrl(fileName);
             Path path = Paths.get(filePath);
             Resource resource = new UrlResource(path.toUri());
-
-            System.out.println("URI del recurso: " + path.toUri());
-            System.out.println("Ruta del recurso: " + path.toString());
 
             // Validar que el archivo existe y es legible
             if (resource.exists() && resource.isReadable()) {
@@ -52,10 +49,12 @@ public class ImageController {
                 String mimeType = java.nio.file.Files.probeContentType(path);
                 MediaType mediaType = mimeType != null ? MediaType.parseMediaType(mimeType) : MediaType.APPLICATION_OCTET_STREAM;
 
+                // Retornar la imagen con el tipo adecuado
                 return ResponseEntity.ok()
                         .contentType(mediaType)
                         .body(resource);
             } else {
+                // Si no existe o no es legible, retornar un error 404
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
         } catch (Exception e) {
@@ -64,16 +63,15 @@ public class ImageController {
         }
     }
 
-    // Crear y subir imagen
+    // Crear y subir una nueva imagen
     @PostMapping("/upload")
-    public ResponseEntity<String> createImage(
-            @RequestParam("image") MultipartFile file){
+    public ResponseEntity<String> createImage(@RequestParam("image") MultipartFile file) {
         try {
             // Llamar al servicio para guardar la imagen
             String fileName = imageService.saveImage(file);
-            String imageUrl = "/images/uploads/" + fileName; // Ruta relativa
+            String imageUrl = "/images/uploads/" + fileName; // Ruta relativa de la imagen subida
 
-            // Retornar la URL relativa de la imagen guardada
+            // Retornar la URL de la imagen guardada
             return ResponseEntity.ok("Imagen subida exitosamente: " + imageUrl);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Error de validación: " + e.getMessage());
