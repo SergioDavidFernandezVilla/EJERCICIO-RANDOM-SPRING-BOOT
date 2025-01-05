@@ -1,6 +1,7 @@
 package com.example.Practica.persistence.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -9,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
@@ -52,17 +54,15 @@ public class ProductEntity {
     private LocalDateTime updated_at;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoria_id", nullable = false)
+    @JoinColumn(name = "categoria_id")
     private CategoryEntity categoria;
-    
 
-    @ManyToOne
-    @JoinColumn(name = "marca_id")  // Asegúrate de que la columna sea 'marca_id'
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "marca_id")
     private MarcaEntity marca;
 
-    @ManyToOne
-    @JoinColumn(name = "image_id")
-    private ImageEntity image;
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private List<ImageEntity> image;
 
     @PrePersist
     public void prePersist() {

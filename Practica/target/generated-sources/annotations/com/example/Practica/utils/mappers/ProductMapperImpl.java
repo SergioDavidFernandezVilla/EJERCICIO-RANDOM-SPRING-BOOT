@@ -9,12 +9,14 @@ import com.example.Practica.presentation.controller.dto.ImageDTO;
 import com.example.Practica.presentation.controller.dto.MarcaDTO;
 import com.example.Practica.presentation.controller.dto.ProductDTO;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-05T06:13:15+0000",
+    date = "2025-01-05T06:24:17+0000",
     comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.41.0.v20241217-1506, environment: Java 17.0.13 (Eclipse Adoptium)"
 )
 @Component
@@ -34,7 +36,7 @@ public class ProductMapperImpl implements ProductMapper {
         LocalDateTime updated_at = null;
         CategoryDTO categoria = null;
         MarcaDTO marca = null;
-        ImageDTO image = null;
+        List<ImageDTO> image = null;
 
         id = product.getId();
         nombre = product.getNombre();
@@ -44,7 +46,7 @@ public class ProductMapperImpl implements ProductMapper {
         updated_at = product.getUpdated_at();
         categoria = fromEntity( product.getCategoria() );
         marca = fromEntity( product.getMarca() );
-        image = imageEntityToImageDTO( product.getImage() );
+        image = imageEntityListToImageDTOList( product.getImage() );
 
         ProductDTO productDTO = new ProductDTO( id, nombre, descripcion, precio, created_at, updated_at, categoria, marca, image );
 
@@ -63,7 +65,7 @@ public class ProductMapperImpl implements ProductMapper {
         productEntity.created_at( product.created_at() );
         productEntity.descripcion( product.descripcion() );
         productEntity.id( product.id() );
-        productEntity.image( imageDTOToImageEntity( product.image() ) );
+        productEntity.image( imageDTOListToImageEntityList( product.image() ) );
         productEntity.marca( fromDTO( product.marca() ) );
         productEntity.nombre( product.nombre() );
         if ( product.precio() != null ) {
@@ -88,7 +90,7 @@ public class ProductMapperImpl implements ProductMapper {
         Double precio = null;
         LocalDateTime created_at = null;
         LocalDateTime updated_at = null;
-        ImageDTO image = null;
+        List<ImageDTO> image = null;
 
         categoria = fromEntity( product.getCategoria() );
         marca = fromEntity( product.getMarca() );
@@ -98,7 +100,7 @@ public class ProductMapperImpl implements ProductMapper {
         precio = product.getPrecio();
         created_at = product.getCreated_at();
         updated_at = product.getUpdated_at();
-        image = imageEntityToImageDTO( product.getImage() );
+        image = imageEntityListToImageDTOList( product.getImage() );
 
         ProductDTO productDTO = new ProductDTO( id, nombre, descripcion, precio, created_at, updated_at, categoria, marca, image );
 
@@ -207,6 +209,19 @@ public class ProductMapperImpl implements ProductMapper {
         return imageDTO;
     }
 
+    protected List<ImageDTO> imageEntityListToImageDTOList(List<ImageEntity> list) {
+        if ( list == null ) {
+            return null;
+        }
+
+        List<ImageDTO> list1 = new ArrayList<ImageDTO>( list.size() );
+        for ( ImageEntity imageEntity : list ) {
+            list1.add( imageEntityToImageDTO( imageEntity ) );
+        }
+
+        return list1;
+    }
+
     protected ImageEntity imageDTOToImageEntity(ImageDTO imageDTO) {
         if ( imageDTO == null ) {
             return null;
@@ -221,5 +236,18 @@ public class ProductMapperImpl implements ProductMapper {
         imageEntity.updated_at( imageDTO.updated_at() );
 
         return imageEntity.build();
+    }
+
+    protected List<ImageEntity> imageDTOListToImageEntityList(List<ImageDTO> list) {
+        if ( list == null ) {
+            return null;
+        }
+
+        List<ImageEntity> list1 = new ArrayList<ImageEntity>( list.size() );
+        for ( ImageDTO imageDTO : list ) {
+            list1.add( imageDTOToImageEntity( imageDTO ) );
+        }
+
+        return list1;
     }
 }

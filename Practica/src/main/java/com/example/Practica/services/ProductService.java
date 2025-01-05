@@ -1,5 +1,7 @@
 package com.example.Practica.services;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -48,7 +50,7 @@ public class ProductService {
             CategoryDTO categoryDTO = CategoryMapper.INSTANCE.fromEntity(product.getCategoria());
             MarcaDTO marcaDTO = MarcaMapper.INSTANCE.fromEntity(product.getMarca());
             
-            ImageDTO imageDTO = ImageMapper.INSTANCE.fromEntity(product.getImage());
+            List<ImageDTO> imageDTO = ImageMapper.INSTANCE.toImageDTOList(product.getImage());
 
             // Devolver el ProductDTO con las relaciones mapeadas
             return new ProductDTO(

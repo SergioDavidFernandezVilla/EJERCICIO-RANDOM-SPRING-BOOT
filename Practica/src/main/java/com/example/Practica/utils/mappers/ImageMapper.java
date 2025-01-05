@@ -1,5 +1,7 @@
 package com.example.Practica.utils.mappers;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -13,4 +15,6 @@ public interface ImageMapper {
 
     ImageDTO fromEntity(ImageEntity image);
     ImageEntity fromDTO(ImageDTO image);
+
+    List<ImageDTO> toImageDTOList(List<ImageEntity> images);
 }

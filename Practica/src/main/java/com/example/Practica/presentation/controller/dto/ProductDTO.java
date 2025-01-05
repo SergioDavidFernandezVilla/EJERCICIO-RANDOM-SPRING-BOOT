@@ -1,6 +1,7 @@
 package com.example.Practica.presentation.controller.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record ProductDTO(
     Long id,
@@ -11,5 +12,5 @@ public record ProductDTO(
     LocalDateTime updated_at,
     CategoryDTO categoria,  // Esto debe mapearse correctamente
     MarcaDTO marca,       // Esto también debe mapearse correctamente
-    ImageDTO image
+    List<ImageDTO> image
 ) {}

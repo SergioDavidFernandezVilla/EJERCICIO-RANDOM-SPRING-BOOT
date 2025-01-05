@@ -11,10 +11,6 @@ import com.example.Practica.persistence.entity.ProductEntity;
 
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
-    @Query("SELECT p FROM ProductEntity p " +
-    "JOIN FETCH p.categoria c " +  // Hacer JOIN con categoria
-    "JOIN FETCH p.marca m"  +       // Hacer JOIN con marca
-    "JOIN FETCH p.image i"         // Hacer JOIN con image
-    )
+    @Query("SELECT p FROM ProductEntity p JOIN FETCH p.categoria c JOIN FETCH p.marca m JOIN FETCH p.image i")
     Page<ProductEntity> findAllWithCategoryAndBrand(Pageable pageable);
 }
