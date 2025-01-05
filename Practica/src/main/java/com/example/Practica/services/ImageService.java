@@ -2,6 +2,7 @@ package com.example.Practica.services;
 
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,31 +26,28 @@ public class ImageService {
     private String baseUrl;
 
     public String saveImage(MultipartFile file) throws IOException {
-
-        // CREAR LA CARPETA SI NO EXISTE
-        if (!Files.exists(Paths.get(uploadDir))) {
-            Files.createDirectories(Paths.get(uploadDir));
-        }
-
+        createUploadDir(); // Centralizamos la creación del directorio
         validateFile(file);
-
+    
         String fileName = UUID.randomUUID().toString() + "_" + cleanFileName(file.getOriginalFilename());
         Path filePath = Paths.get(uploadDir).resolve(fileName).normalize();
-
+    
+        if (Files.exists(filePath)) {
+            throw new IOException("Un archivo con este nombre ya existe: " + fileName);
+        }
+    
         try {
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
+    
             ImageEntity image = new ImageEntity();
             image.setFileName(fileName);
-            image.setFilePath(filePath.toString());
+            image.setFilePath(fileName); // Solo guardamos la ruta relativa
             image.setType(file.getContentType());
             imageRepository.save(image);
-
-            // Dentro del método saveImage:
+    
             return fileName;
         } catch (IOException e) {
-            // Manejo de errores al guardar el archivo
-            throw new IOException("Error al guardar la imagen en el sistema de archivos", e);
+            throw new IOException("Error al guardar la imagen", e);
         }
     }
 
@@ -87,4 +85,7 @@ public class ImageService {
         return null;
     }
 
+    public List<ImageEntity> getAllImages() {
+        return imageRepository.findAll();
+    }
 }

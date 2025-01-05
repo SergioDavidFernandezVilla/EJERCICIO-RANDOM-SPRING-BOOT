@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.example.Practica.persistence.entity.ImageEntity;
 import com.example.Practica.services.ImageService;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -23,6 +26,12 @@ public class ImageController {
     @Autowired
     public ImageController(ImageService imageService) {
         this.imageService = imageService;
+    }
+
+    // GET ALL
+    @GetMapping("/all")
+    public ResponseEntity<List<ImageEntity>> getAllImages() {
+        return ResponseEntity.ok(imageService.getAllImages());
     }
 
     // Obtener la imagen
