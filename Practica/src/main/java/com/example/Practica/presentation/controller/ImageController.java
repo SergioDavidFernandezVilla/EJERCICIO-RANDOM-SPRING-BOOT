@@ -64,7 +64,7 @@ public class ImageController {
         try {
             // Llamar al servicio para guardar la imagen
             String fileName = imageService.saveImage(file);
-            String imageUrl = "/uploads/" + fileName; // Ruta relativa
+            String imageUrl = "/images/uploads/" + fileName; // Ruta relativa
 
             // Retornar la URL relativa de la imagen guardada
             return ResponseEntity.ok("Imagen subida exitosamente: " + imageUrl);
