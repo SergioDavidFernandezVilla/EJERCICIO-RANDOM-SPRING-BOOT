@@ -1,7 +1,6 @@
 package com.example.Practica.presentation.controller.dto;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public record ProductDTO(
     Long id,

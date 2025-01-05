@@ -1,7 +1,5 @@
 package com.example.Practica.services;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,7 +31,8 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final ImageRepository imageRepository;
 
-    public ProductService(ProductRepository productRepository , MarcaRepository marcaRepository, CategoryRepository categoryRepository, ImageRepository imageRepository) {
+    public ProductService(ProductRepository productRepository, MarcaRepository marcaRepository,
+            CategoryRepository categoryRepository, ImageRepository imageRepository) {
         this.productRepository = productRepository;
         this.marcaRepository = marcaRepository;
         this.categoryRepository = categoryRepository;
@@ -49,25 +48,24 @@ public class ProductService {
         return products.map(product -> {
             // Mapear el producto a DTO
             ProductDTO productDTO = ProductMapper.INSTANCE.fromEntity(product);
-            
+
             // Mapear las relaciones de categoria y marca
             CategoryDTO categoryDTO = CategoryMapper.INSTANCE.fromEntity(product.getCategoria());
             MarcaDTO marcaDTO = MarcaMapper.INSTANCE.fromEntity(product.getMarca());
-            
+
             ImageDTO imageDTO = ImageMapper.INSTANCE.fromEntity(product.getImage());
 
             // Devolver el ProductDTO con las relaciones mapeadas
             return new ProductDTO(
-                productDTO.id(),
-                productDTO.nombre(),
-                productDTO.descripcion(),
-                productDTO.precio(),
-                productDTO.created_at(),
-                productDTO.updated_at(),
-                categoryDTO,  // Asignar categoria
-                marcaDTO,      // Asignar marca
-                imageDTO
-            );
+                    productDTO.id(),
+                    productDTO.nombre(),
+                    productDTO.descripcion(),
+                    productDTO.precio(),
+                    productDTO.created_at(),
+                    productDTO.updated_at(),
+                    categoryDTO, // Asignar categoria
+                    marcaDTO, // Asignar marca
+                    imageDTO);
         });
     }
 
@@ -90,26 +88,29 @@ public class ProductService {
 
         // Buscar la marca y la categoría en la base de datos por su ID
         MarcaEntity marca = marcaRepository.findById(productDTO.marca().id())
-                .orElseThrow(() -> new IllegalArgumentException("La marca con ID " + productDTO.marca().id() + " no existe"));
-    
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "La marca con ID " + productDTO.marca().id() + " no existe"));
+
         CategoryEntity categoria = categoryRepository.findById(productDTO.categoria().id())
-                .orElseThrow(() -> new IllegalArgumentException("La categoría con ID " + productDTO.categoria().id() + " no existe"));
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "La categoría con ID " + productDTO.categoria().id() + " no existe"));
 
         // Buscar la imagen en la base de datos por su ID
         ImageEntity image = imageRepository.findById(productDTO.image().id())
-                .orElseThrow(() -> new IllegalArgumentException("La imagen con ID " + productDTO.image().id() + " no existe"));
-    
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "La imagen con ID " + productDTO.image().id() + " no existe"));
+
         // Crear la entidad de producto a partir del DTO
         ProductEntity product = ProductMapper.INSTANCE.fromDTO(productDTO);
-    
+
         // Asignar la marca y la categoría al producto
         product.setMarca(marca);
         product.setCategoria(categoria);
         product.setImage(image);
-    
+
         // Guardar el producto en la base de datos
         ProductEntity productSaved = productRepository.save(product);
-    
+
         // Mapear y devolver el DTO con el producto guardado
         return ProductMapper.INSTANCE.fromEntity(productSaved);
     }
