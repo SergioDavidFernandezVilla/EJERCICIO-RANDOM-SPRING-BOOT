@@ -58,11 +58,10 @@ public class ImageController {
     // Crear y subir imagen
     @PostMapping("/upload")
     public ResponseEntity<String> createImage(
-            @RequestParam("image") MultipartFile file,
-            @RequestParam("product_id") Long productId) {
+            @RequestParam("image") MultipartFile file){
         try {
             // Llamar al servicio para guardar la imagen
-            String fileName = imageService.saveImage(file, productId);
+            String fileName = imageService.saveImage(file);
             String imageUrl = "/images/uploads/" + fileName; // Ruta relativa
 
             // Retornar la URL relativa de la imagen guardada

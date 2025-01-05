@@ -1,6 +1,7 @@
 package com.example.Practica.persistence.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -9,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -38,9 +40,8 @@ public class ImageEntity {
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
-    private ProductEntity product;
+    @OneToMany(mappedBy = "image")  // Asegúrate de que la propiedad en ProductoEntity se llame 'marca'
+    private List<ProductEntity> productos;
 
     @PrePersist
     public void prePersist() {
