@@ -64,7 +64,7 @@ public class ProductEntity {
     private MarcaEntity marca;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ImageEntity> image = new ArrayList<>();
+    private ImageEntity image;
     
     @PrePersist
     public void prePersist() {

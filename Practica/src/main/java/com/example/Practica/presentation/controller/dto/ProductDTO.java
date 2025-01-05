@@ -12,5 +12,5 @@ public record ProductDTO(
     LocalDateTime updated_at,
     CategoryDTO categoria,  // Esto debe mapearse correctamente
     MarcaDTO marca,       // Esto también debe mapearse correctamente
-    List<ImageDTO> image
+    ImageDTO image
 ) {}

@@ -7,9 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.Practica.persistence.entity.CategoryEntity;
+import com.example.Practica.persistence.entity.ImageEntity;
 import com.example.Practica.persistence.entity.MarcaEntity;
 import com.example.Practica.persistence.entity.ProductEntity;
 import com.example.Practica.persistence.repository.CategoryRepository;
+import com.example.Practica.persistence.repository.ImageRepository;
 import com.example.Practica.persistence.repository.MarcaRepository;
 import com.example.Practica.persistence.repository.ProductRepository;
 import com.example.Practica.presentation.controller.dto.CategoryDTO;
@@ -29,11 +31,13 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final MarcaRepository marcaRepository;
     private final CategoryRepository categoryRepository;
+    private final ImageRepository imageRepository;
 
-    public ProductService(ProductRepository productRepository , MarcaRepository marcaRepository, CategoryRepository categoryRepository) {
+    public ProductService(ProductRepository productRepository , MarcaRepository marcaRepository, CategoryRepository categoryRepository, ImageRepository imageRepository) {
         this.productRepository = productRepository;
         this.marcaRepository = marcaRepository;
         this.categoryRepository = categoryRepository;
+        this.imageRepository = imageRepository;
     }
 
     // Método de paginación con las relaciones cargadas
@@ -50,7 +54,7 @@ public class ProductService {
             CategoryDTO categoryDTO = CategoryMapper.INSTANCE.fromEntity(product.getCategoria());
             MarcaDTO marcaDTO = MarcaMapper.INSTANCE.fromEntity(product.getMarca());
             
-            List<ImageDTO> imageDTO = ImageMapper.INSTANCE.toImageDTOList(product.getImage());
+            ImageDTO imageDTO = ImageMapper.INSTANCE.fromEntity(product.getImage());
 
             // Devolver el ProductDTO con las relaciones mapeadas
             return new ProductDTO(
@@ -79,12 +83,21 @@ public class ProductService {
     @Transactional
     public ProductDTO createProduct(ProductDTO productDTO) {
 
+        // VERFICIAR QUE NO EXISTA DICHO PRODUCTO
+        if (productRepository.existsByNombre(productDTO.nombre())) {
+            throw new IllegalArgumentException("El producto con nombre " + productDTO.nombre() + " ya existe");
+        }
+
         // Buscar la marca y la categoría en la base de datos por su ID
         MarcaEntity marca = marcaRepository.findById(productDTO.marca().id())
                 .orElseThrow(() -> new IllegalArgumentException("La marca con ID " + productDTO.marca().id() + " no existe"));
     
         CategoryEntity categoria = categoryRepository.findById(productDTO.categoria().id())
                 .orElseThrow(() -> new IllegalArgumentException("La categoría con ID " + productDTO.categoria().id() + " no existe"));
+
+        // Buscar la imagen en la base de datos por su ID
+        ImageEntity image = imageRepository.findById(productDTO.image().id())
+                .orElseThrow(() -> new IllegalArgumentException("La imagen con ID " + productDTO.image().id() + " no existe"));
     
         // Crear la entidad de producto a partir del DTO
         ProductEntity product = ProductMapper.INSTANCE.fromDTO(productDTO);
@@ -92,6 +105,7 @@ public class ProductService {
         // Asignar la marca y la categoría al producto
         product.setMarca(marca);
         product.setCategoria(categoria);
+        product.setImage(image);
     
         // Guardar el producto en la base de datos
         ProductEntity productSaved = productRepository.save(product);
