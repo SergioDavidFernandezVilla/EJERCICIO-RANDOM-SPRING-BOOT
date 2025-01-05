@@ -1,8 +1,10 @@
 package com.example.Practica.persistence.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -61,9 +63,9 @@ public class ProductEntity {
     @JoinColumn(name = "marca_id")
     private MarcaEntity marca;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    private List<ImageEntity> image;
-
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ImageEntity> image = new ArrayList<>();
+    
     @PrePersist
     public void prePersist() {
         if (created_at == null) {
