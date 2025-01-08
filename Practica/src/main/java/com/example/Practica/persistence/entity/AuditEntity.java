@@ -20,9 +20,18 @@ public abstract class AuditEntity {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updated_at;
 
+     // Constructor para asegurar que las fechas se inicialicen
+     public AuditEntity() {
+        this.created_at = LocalDateTime.now();
+        this.updated_at = LocalDateTime.now();
+    }
+
     @PrePersist
     public void prePersist() {
-        created_at = LocalDateTime.now();
+        // Asegura que las fechas se seteen si no fueron inicializadas por el constructor
+        if (created_at == null) {
+            created_at = LocalDateTime.now();
+        }
         updated_at = LocalDateTime.now();
     }
 

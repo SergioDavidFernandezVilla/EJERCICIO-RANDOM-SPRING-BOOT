@@ -1,6 +1,5 @@
 package com.example.Practica.persistence.entity;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -8,8 +7,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +21,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "image")
-public class ImageEntity {
+public class ImageEntity extends AuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,25 +30,7 @@ public class ImageEntity {
     private String fileName;
     private String filePath;
 
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
-
     @OneToMany(mappedBy = "image")  // Asegúrate de que la propiedad en ProductoEntity se llame 'marca'
     private List<ProductEntity> productos;
-
-    @PrePersist
-    public void prePersist() {
-        if (created_at == null) {
-            created_at = LocalDateTime.now();  // Se establece solo una vez en la creación.
-        }
-        if (updated_at == null) {
-            updated_at = LocalDateTime.now();  // Se establece en la creación también.
-        }
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        updated_at = LocalDateTime.now();  // Se actualiza solo el campo 'updated_at' al actualizar la entidad.
-    }
 
 }
