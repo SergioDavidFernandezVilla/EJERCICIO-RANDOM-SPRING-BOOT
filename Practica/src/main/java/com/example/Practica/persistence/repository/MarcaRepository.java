@@ -1,5 +1,7 @@
 package com.example.Practica.persistence.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,6 +10,7 @@ import com.example.Practica.persistence.entity.MarcaEntity;
 @Repository
 public interface MarcaRepository extends JpaRepository<MarcaEntity, Long> {
 
-    Iterable<MarcaEntity> findByMarcaContainingIgnoreCase(String marca);
+    Iterable<MarcaEntity> findByMarcaContainingIgnoreCase(String nombre);
     
+    Optional<MarcaEntity> findByMarca(String nombre);
 }

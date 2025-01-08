@@ -74,7 +74,7 @@ public class ImageService {
             throw new IllegalArgumentException("El nombre del archivo no puede estar vacío");
         }
         String cleanName = fileName.replaceAll("[^a-zA-Z0-9\\.\\-_]", "_");
-        if (!cleanName.matches(".+\\.(jpg|jpeg|png|gif|bmp|webp)$")) {
+        if (!cleanName.matches(".+\\.(jpg|jpeg|png|gif|bmp|webp|PNG|JPG|JPEG)$")) {
             throw new IllegalArgumentException("El archivo debe tener una extensión de imagen válida");
         }
         return cleanName;

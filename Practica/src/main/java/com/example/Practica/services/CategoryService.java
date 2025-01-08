@@ -48,9 +48,8 @@ public class CategoryService {
     public CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO) {
         return categoryRepository.findById(id)
                 .map(category -> {
-                    category.setCategoria(categoryDTO.categoria());
+                    category.setNombre(categoryDTO.categoria());
                     category.setDescripcion(categoryDTO.descripcion());
-                    category.setUpdated_at(LocalDateTime.now());
                     return categoryRepository.save(category);
                 })
                 .map(CategoryMapper.INSTANCE::fromEntity)

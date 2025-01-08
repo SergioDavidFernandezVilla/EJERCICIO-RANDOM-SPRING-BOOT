@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-05T20:51:54+0000",
+    date = "2025-01-08T00:19:56+0000",
     comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.41.0.v20241217-1506, environment: Java 17.0.13 (Eclipse Adoptium)"
 )
 @Component
@@ -21,16 +21,14 @@ public class CategoryMapperImpl implements CategoryMapper {
         }
 
         Long id = null;
-        String categoria = null;
         String descripcion = null;
-        LocalDateTime created_at = null;
-        LocalDateTime updated_at = null;
 
         id = categoryEntity.getId();
-        categoria = categoryEntity.getCategoria();
         descripcion = categoryEntity.getDescripcion();
-        created_at = categoryEntity.getCreated_at();
-        updated_at = categoryEntity.getUpdated_at();
+
+        String categoria = null;
+        LocalDateTime created_at = null;
+        LocalDateTime updated_at = null;
 
         CategoryDTO categoryDTO = new CategoryDTO( id, categoria, descripcion, created_at, updated_at );
 
@@ -45,11 +43,8 @@ public class CategoryMapperImpl implements CategoryMapper {
 
         CategoryEntity.CategoryEntityBuilder categoryEntity = CategoryEntity.builder();
 
-        categoryEntity.categoria( categoryDTO.categoria() );
-        categoryEntity.created_at( categoryDTO.created_at() );
         categoryEntity.descripcion( categoryDTO.descripcion() );
         categoryEntity.id( categoryDTO.id() );
-        categoryEntity.updated_at( categoryDTO.updated_at() );
 
         return categoryEntity.build();
     }

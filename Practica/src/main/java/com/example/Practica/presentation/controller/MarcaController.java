@@ -55,7 +55,7 @@ public class MarcaController {
     public ResponseEntity<MarcaDTO> updateMarca(@PathVariable Long id, @Valid @RequestBody MarcaDTO marcaDTO){
         return marcaRepository.findById(id)
             .map(marca -> {
-                marca.setMarca(marcaDTO.marca());
+                marca.setNombre(marcaDTO.marca());
                 marca.setDescripcion(marcaDTO.descripcion());
                 MarcaEntity marcaUpdated = marcaRepository.save(marca);
                 MarcaDTO responseDTO = MarcaMapper.INSTANCE.fromEntity(marcaUpdated);

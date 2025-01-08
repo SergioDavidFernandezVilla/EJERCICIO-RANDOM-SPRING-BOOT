@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-05T20:51:54+0000",
+    date = "2025-01-08T00:20:13+0000",
     comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.41.0.v20241217-1506, environment: Java 17.0.13 (Eclipse Adoptium)"
 )
 @Component
@@ -30,8 +30,6 @@ public class ProductMapperImpl implements ProductMapper {
         String nombre = null;
         String descripcion = null;
         Double precio = null;
-        LocalDateTime created_at = null;
-        LocalDateTime updated_at = null;
         CategoryDTO categoria = null;
         MarcaDTO marca = null;
         ImageDTO image = null;
@@ -40,11 +38,12 @@ public class ProductMapperImpl implements ProductMapper {
         nombre = product.getNombre();
         descripcion = product.getDescripcion();
         precio = product.getPrecio();
-        created_at = product.getCreated_at();
-        updated_at = product.getUpdated_at();
         categoria = categoryEntityToCategoryDTO( product.getCategoria() );
         marca = marcaEntityToMarcaDTO( product.getMarca() );
         image = imageEntityToImageDTO( product.getImage() );
+
+        LocalDateTime created_at = null;
+        LocalDateTime updated_at = null;
 
         ProductDTO productDTO = new ProductDTO( id, nombre, descripcion, precio, created_at, updated_at, categoria, marca, image );
 
@@ -60,7 +59,6 @@ public class ProductMapperImpl implements ProductMapper {
         ProductEntity.ProductEntityBuilder productEntity = ProductEntity.builder();
 
         productEntity.categoria( categoryDTOToCategoryEntity( product.categoria() ) );
-        productEntity.created_at( product.created_at() );
         productEntity.descripcion( product.descripcion() );
         productEntity.id( product.id() );
         productEntity.image( imageDTOToImageEntity( product.image() ) );
@@ -69,7 +67,6 @@ public class ProductMapperImpl implements ProductMapper {
         if ( product.precio() != null ) {
             productEntity.precio( product.precio() );
         }
-        productEntity.updated_at( product.updated_at() );
 
         return productEntity.build();
     }
@@ -80,16 +77,14 @@ public class ProductMapperImpl implements ProductMapper {
         }
 
         Long id = null;
-        String categoria = null;
         String descripcion = null;
-        LocalDateTime created_at = null;
-        LocalDateTime updated_at = null;
 
         id = categoryEntity.getId();
-        categoria = categoryEntity.getCategoria();
         descripcion = categoryEntity.getDescripcion();
-        created_at = categoryEntity.getCreated_at();
-        updated_at = categoryEntity.getUpdated_at();
+
+        String categoria = null;
+        LocalDateTime created_at = null;
+        LocalDateTime updated_at = null;
 
         CategoryDTO categoryDTO = new CategoryDTO( id, categoria, descripcion, created_at, updated_at );
 
@@ -102,16 +97,14 @@ public class ProductMapperImpl implements ProductMapper {
         }
 
         Long id = null;
-        String marca = null;
         String descripcion = null;
-        LocalDateTime created_at = null;
-        LocalDateTime updated_at = null;
 
         id = marcaEntity.getId();
-        marca = marcaEntity.getMarca();
         descripcion = marcaEntity.getDescripcion();
-        created_at = marcaEntity.getCreated_at();
-        updated_at = marcaEntity.getUpdated_at();
+
+        String marca = null;
+        LocalDateTime created_at = null;
+        LocalDateTime updated_at = null;
 
         MarcaDTO marcaDTO = new MarcaDTO( id, marca, descripcion, created_at, updated_at );
 
@@ -126,16 +119,14 @@ public class ProductMapperImpl implements ProductMapper {
         Long id = null;
         String type = null;
         String fileName = null;
-        String filePath = null;
         LocalDateTime updated_at = null;
 
         id = imageEntity.getId();
         type = imageEntity.getType();
         fileName = imageEntity.getFileName();
-        filePath = imageEntity.getFilePath();
         updated_at = imageEntity.getUpdated_at();
 
-        ImageDTO imageDTO = new ImageDTO( id, type, fileName, filePath, updated_at );
+        ImageDTO imageDTO = new ImageDTO( id, type, fileName, updated_at );
 
         return imageDTO;
     }
@@ -147,11 +138,8 @@ public class ProductMapperImpl implements ProductMapper {
 
         CategoryEntity.CategoryEntityBuilder categoryEntity = CategoryEntity.builder();
 
-        categoryEntity.categoria( categoryDTO.categoria() );
-        categoryEntity.created_at( categoryDTO.created_at() );
         categoryEntity.descripcion( categoryDTO.descripcion() );
         categoryEntity.id( categoryDTO.id() );
-        categoryEntity.updated_at( categoryDTO.updated_at() );
 
         return categoryEntity.build();
     }
@@ -164,7 +152,6 @@ public class ProductMapperImpl implements ProductMapper {
         ImageEntity.ImageEntityBuilder imageEntity = ImageEntity.builder();
 
         imageEntity.fileName( imageDTO.fileName() );
-        imageEntity.filePath( imageDTO.filePath() );
         imageEntity.id( imageDTO.id() );
         imageEntity.type( imageDTO.type() );
         imageEntity.updated_at( imageDTO.updated_at() );
@@ -179,11 +166,8 @@ public class ProductMapperImpl implements ProductMapper {
 
         MarcaEntity.MarcaEntityBuilder marcaEntity = MarcaEntity.builder();
 
-        marcaEntity.created_at( marcaDTO.created_at() );
         marcaEntity.descripcion( marcaDTO.descripcion() );
         marcaEntity.id( marcaDTO.id() );
-        marcaEntity.marca( marcaDTO.marca() );
-        marcaEntity.updated_at( marcaDTO.updated_at() );
 
         return marcaEntity.build();
     }

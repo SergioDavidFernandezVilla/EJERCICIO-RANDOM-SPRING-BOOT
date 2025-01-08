@@ -1,6 +1,6 @@
 package com.example.Practica.persistence.entity;
 
-import java.time.LocalDateTime;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -8,7 +8,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -28,7 +27,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "products")
-public class ProductEntity {
+public class ProductEntity extends AuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +35,7 @@ public class ProductEntity {
 
     @Size(max = 100, message = "El nombre de un producto, no puede tener más de 100 caracteres")
     @NotBlank(message = "El nombre es obligatorio")
+    @Column(unique = true)
     private String nombre;
 
     @Size(max = 255, message = "La descripción de un producto, no puede tener más de 255 caracteres")
@@ -46,10 +46,6 @@ public class ProductEntity {
     @DecimalMin(value = "0.0", inclusive = false, message = "El precio debe ser mayor que 0")
     @PositiveOrZero(message = "El precio no puede ser negativo")
     private double precio;
-
-    private LocalDateTime created_at;
-    
-    private LocalDateTime updated_at;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoria_id")
@@ -62,15 +58,5 @@ public class ProductEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id")
     private ImageEntity image;
-    
-    @PrePersist
-    public void prePersist() {
-        if (created_at == null) {
-            created_at = LocalDateTime.now();  // Se establece solo una vez en la creación.
-        }
-        if (updated_at == null) {
-            updated_at = LocalDateTime.now();  // Se establece en la creación también.
-        }
-    }
 
 }

@@ -77,6 +77,15 @@ public class ProductService {
         return ProductMapper.INSTANCE.fromEntity(product);
     }
 
+    // GET BY NAME
+    public ProductDTO findByNameProduct(ProductDTO productDTO) {
+        ProductEntity product = productRepository.findByNombre(productDTO.nombre())
+                .orElseThrow(
+                        () -> new IllegalArgumentException(
+                                "El producto con nombre " + productDTO.nombre() + " no existe"));
+        return ProductMapper.INSTANCE.fromEntity(product);
+    }
+
     // METODO CREATE
     @Transactional
     public ProductDTO createProduct(ProductDTO productDTO) {
