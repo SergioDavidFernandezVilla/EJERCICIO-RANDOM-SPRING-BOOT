@@ -31,8 +31,8 @@ public class CategoryEntity extends AuditEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(max = 50, message = "La categoría no puede tener más de 50 caracteres")
-    @NotBlank(message = "La categoría es obligatoria")
+    @Size(max = 50, message = "La categoria no puede tener más de 50 caracteres")
+    @NotBlank(message = "La categoria es obligatoria")
     @Column(unique = true)
     private String nombre;
 
