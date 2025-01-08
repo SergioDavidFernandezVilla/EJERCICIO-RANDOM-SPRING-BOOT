@@ -12,5 +12,5 @@ public interface MarcaRepository extends JpaRepository<MarcaEntity, Long> {
 
     Iterable<MarcaEntity> findByMarcaContainingIgnoreCase(String nombre);
     
-    Optional<MarcaEntity> findByMarca(String nombre);
+    Optional<MarcaEntity> findByNombre(String nombre);
 }
