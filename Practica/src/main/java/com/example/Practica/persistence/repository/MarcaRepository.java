@@ -8,9 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.example.Practica.persistence.entity.MarcaEntity;
 
 @Repository
-public interface MarcaRepository extends JpaRepository<MarcaEntity, Long> {
-
-    Iterable<MarcaEntity> findByMarcaContainingIgnoreCase(String nombre);
-    
+public interface MarcaRepository extends JpaRepository<MarcaEntity, Long> {    
     Optional<MarcaEntity> findByNombre(String nombre);
 }
