@@ -48,7 +48,7 @@ public class CategoryService {
     public CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO) {
         return categoryRepository.findById(id)
                 .map(category -> {
-                    category.setNombre(categoryDTO.categoria());
+                    category.setNombre(categoryDTO.nombre());
                     category.setDescripcion(categoryDTO.descripcion());
                     return categoryRepository.save(category);
                 })

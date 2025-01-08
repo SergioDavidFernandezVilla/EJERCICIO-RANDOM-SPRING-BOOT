@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-08T00:19:16+0000",
+    date = "2025-01-08T00:27:37+0000",
     comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.41.0.v20241217-1506, environment: Java 17.0.13 (Eclipse Adoptium)"
 )
 @Component
@@ -21,16 +21,17 @@ public class MarcaMapperImpl implements MarcaMapper {
         }
 
         Long id = null;
+        String nombre = null;
         String descripcion = null;
 
         id = marca.getId();
+        nombre = marca.getNombre();
         descripcion = marca.getDescripcion();
 
-        String marca1 = null;
         LocalDateTime created_at = null;
         LocalDateTime updated_at = null;
 
-        MarcaDTO marcaDTO = new MarcaDTO( id, marca1, descripcion, created_at, updated_at );
+        MarcaDTO marcaDTO = new MarcaDTO( id, nombre, descripcion, created_at, updated_at );
 
         return marcaDTO;
     }
@@ -45,6 +46,7 @@ public class MarcaMapperImpl implements MarcaMapper {
 
         marcaEntity.descripcion( marca.descripcion() );
         marcaEntity.id( marca.id() );
+        marcaEntity.nombre( marca.nombre() );
 
         return marcaEntity.build();
     }
