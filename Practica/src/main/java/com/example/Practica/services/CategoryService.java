@@ -13,14 +13,17 @@ import com.example.Practica.utils.messageErrors.category.CategoryNotFoundMessage
 import com.example.Practica.utils.regex.ValidatorRegex;
 
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class CategoryService {
     
     private final CategoryRepository categoryRepository;
     private final ValidatorRegex validatorRegex;
+
+    public CategoryService(CategoryRepository categoryRepository, ValidatorRegex validatorRegex) {
+        this.categoryRepository = categoryRepository;
+        this.validatorRegex = validatorRegex;
+    }
 
     // METODO ALL
     public List<CategoryDTO> findAllCategories(){
@@ -44,8 +47,8 @@ public class CategoryService {
     public CategoryDTO createCategory(CategoryDTO categoryDTO){
         CategoryEntity category = CategoryMapper.INSTANCE.fromDTO(categoryDTO);
 
-        ValidatorRegex.validarNombre(category.getNombre());
-        ValidatorRegex.validarDescripcion(category.getDescripcion());
+        validatorRegex.validarNombre(category.getNombre());
+        validatorRegex.validarDescripcion(category.getDescripcion());
 
         CategoryEntity categorySaved = categoryRepository.save(category);
         return CategoryMapper.INSTANCE.fromEntity(categorySaved);

@@ -33,8 +33,8 @@ public class MarcaService {
             throw new RuntimeException("La marca ya existe");
         }
 
-        ValidatorRegex.validarNombre(marca.getNombre());
-        ValidatorRegex.validarDescripcion(marca.getDescripcion());
+        validatorRegex.validarNombre(marca.getNombre());
+        validatorRegex.validarDescripcion(marca.getDescripcion());
 
         MarcaEntity marcaSaved = marcaRepository.save(marca);
         return MarcaMapper.INSTANCE.fromEntity(marcaSaved);
