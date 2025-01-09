@@ -12,8 +12,10 @@ public interface MarcaMapper {
 
     MarcaMapper INSTANCE = Mappers.getMapper(MarcaMapper.class);
 
+    // DTO <-> Entity
     MarcaDTO fromEntity(MarcaEntity marca);
 
+    // Entity <-> DTO
     MarcaEntity fromDTO(MarcaDTO marca);
 
 }

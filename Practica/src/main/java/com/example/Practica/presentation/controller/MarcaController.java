@@ -2,7 +2,6 @@ package com.example.Practica.presentation.controller;
 
 import java.util.List;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,10 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Practica.persistence.entity.MarcaEntity;
-import com.example.Practica.persistence.repository.MarcaRepository;
 import com.example.Practica.presentation.controller.dto.MarcaDTO;
-import com.example.Practica.utils.mappers.MarcaMapper;
+import com.example.Practica.services.MarcaService;
 
 import jakarta.validation.Valid;
 
@@ -25,62 +22,43 @@ import jakarta.validation.Valid;
 @RequestMapping("/marca")
 public class MarcaController {
     
-    private MarcaRepository marcaRepository;
+    private MarcaService marcaService;
 
-    public MarcaController(MarcaRepository marcaRepository) {
-        this.marcaRepository = marcaRepository;
+    public MarcaController(MarcaService marcaService) {
+        this.marcaService = marcaService;
     }
 
     //GET ALL
     @GetMapping("/all")
     public ResponseEntity<List<MarcaDTO>> findAllMarcas(){
-
-        List<MarcaEntity> marcas = marcaRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
-        List<MarcaDTO> response = marcas.stream().map(MarcaMapper.INSTANCE::fromEntity).toList();
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(marcaService.findAllMarcas());
     }
 
     //CREATE
     @PostMapping
-    public ResponseEntity<MarcaDTO> createMarca(@Valid @RequestBody MarcaDTO marcaDTO){
-        MarcaEntity marca = MarcaMapper.INSTANCE.fromDTO(marcaDTO);
-        MarcaEntity marcaSaved = marcaRepository.save(marca);
-        MarcaDTO responseDTO = MarcaMapper.INSTANCE.fromEntity(marcaSaved);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+    public ResponseEntity<MarcaDTO> CreateMarca(@Valid @RequestBody MarcaDTO marcaDTO){
+        return new ResponseEntity<>(marcaService.createMarca(marcaDTO), HttpStatus.CREATED);
     }
 
     //UPDATE
     @PutMapping("/{id}")
     public ResponseEntity<MarcaDTO> updateMarca(@PathVariable Long id, @Valid @RequestBody MarcaDTO marcaDTO){
-        return marcaRepository.findById(id)
-            .map(marca -> {
-                marca.setNombre(marcaDTO.nombre());
-                marca.setDescripcion(marcaDTO.descripcion());
-                MarcaEntity marcaUpdated = marcaRepository.save(marca);
-                MarcaDTO responseDTO = MarcaMapper.INSTANCE.fromEntity(marcaUpdated);
-                return ResponseEntity.ok(responseDTO);
-            })
-            .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(marcaService.updateMarca(marcaDTO));
     }
     
 
     //DELETE
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMarca(@PathVariable Long id){
-        marcaRepository.deleteById(id);
+        marcaService.deleteMarca(id);
         return ResponseEntity.noContent().build();
     }
 
     //BYID
     @GetMapping("/{id}")
     public ResponseEntity<MarcaDTO> findMarcaById(@PathVariable Long id){
-        return marcaRepository.findById(id)
-            .map(marca -> {
-                MarcaDTO responseDTO = MarcaMapper.INSTANCE.fromEntity(marca);
-                return ResponseEntity.ok(responseDTO);
-            })
-            .orElse(ResponseEntity.notFound().build());
-        }
+        MarcaDTO marcaDTO = marcaService.findMarcaById(id);
+        return ResponseEntity.ok(marcaDTO);
+    }
         
 }

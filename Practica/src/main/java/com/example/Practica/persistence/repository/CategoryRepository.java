@@ -9,5 +9,8 @@ import com.example.Practica.persistence.entity.CategoryEntity;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> {
+
    Optional<CategoryEntity> findByNombre(String nombre);
+
+   boolean existsByNombre(String nombre);
 }

@@ -10,4 +10,6 @@ import com.example.Practica.persistence.entity.MarcaEntity;
 @Repository
 public interface MarcaRepository extends JpaRepository<MarcaEntity, Long> {    
     Optional<MarcaEntity> findByNombre(String nombre);
+
+    boolean existsByNombre(String nombre);
 }

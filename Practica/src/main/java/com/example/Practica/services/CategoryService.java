@@ -31,13 +31,20 @@ public class CategoryService {
     public CategoryDTO findCategoryById(Long id){
         return categoryRepository.findById(id)
             .map(CategoryMapper.INSTANCE::fromEntity)
-            .orElseThrow();
+            .orElseThrow(
+                () -> new RuntimeException("La categoria no existe")
+            );
     }
 
     // METODO CREATE
     @Transactional
     public CategoryDTO createCategory(CategoryDTO categoryDTO){
         CategoryEntity category = CategoryMapper.INSTANCE.fromDTO(categoryDTO);
+
+        if(categoryRepository.existsByNombre(categoryDTO.nombre())){
+            throw new RuntimeException("La categoria ya existe");
+        }
+
         CategoryEntity categorySaved = categoryRepository.save(category);
         return CategoryMapper.INSTANCE.fromEntity(categorySaved);
     }
@@ -59,6 +66,9 @@ public class CategoryService {
     // METODO DELETE
     @Transactional
     public void deleteCategory(Long id){
+        if(!categoryRepository.existsById(id)){
+            throw new RuntimeException("La categoria no existe");
+        }
         categoryRepository.deleteById(id);
     }
 }
