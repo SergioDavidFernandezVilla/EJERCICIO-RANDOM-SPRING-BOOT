@@ -9,6 +9,8 @@ import com.example.Practica.persistence.entity.MarcaEntity;
 import com.example.Practica.persistence.repository.MarcaRepository;
 import com.example.Practica.presentation.controller.dto.MarcaDTO;
 import com.example.Practica.utils.mappers.MarcaMapper;
+import com.example.Practica.utils.messageErrors.marca.MarcaNotFoundMessage;
+import com.example.Practica.utils.regex.ValidatorRegex;
 
 import jakarta.transaction.Transactional;
 
@@ -16,9 +18,11 @@ import jakarta.transaction.Transactional;
 public class MarcaService {
     
     private final MarcaRepository marcaRepository;
+    private final ValidatorRegex validatorRegex;
 
-    public MarcaService(MarcaRepository marcaRepository) {
+    public MarcaService(MarcaRepository marcaRepository, ValidatorRegex validatorRegex) {
         this.marcaRepository = marcaRepository;
+        this.validatorRegex = validatorRegex;
     }
 
     // CREATE
@@ -29,15 +33,8 @@ public class MarcaService {
             throw new RuntimeException("La marca ya existe");
         }
 
-        // NOMBRES VALIDOS REGEX
-        if(marcaDTO.nombre() == null || !marcaDTO.nombre().matches("[a-zA-Z ]+")){
-            throw new RuntimeException("El nombre de la marca no es valido");
-        }
-
-        // DESCRIPCION VALIDA REGEX
-        if(marcaDTO.descripcion() == null || !marcaDTO.descripcion().matches("[a-zA-Z0-9 ]+")){
-            throw new RuntimeException("La descripcion de la marca no es valida");
-        }
+        ValidatorRegex.validarNombre(marca.getNombre());
+        ValidatorRegex.validarDescripcion(marca.getDescripcion());
 
         MarcaEntity marcaSaved = marcaRepository.save(marca);
         return MarcaMapper.INSTANCE.fromEntity(marcaSaved);
@@ -81,6 +78,6 @@ public class MarcaService {
                     return marcaRepository.save(marca);
                 })
                 .map(MarcaMapper.INSTANCE::fromEntity)
-                .orElseThrow(() -> new RuntimeException("La marca con id: " + id + " no existe"));
+                .orElseThrow(() -> new MarcaNotFoundMessage("La marca con id: " + id + " no existe"));
     }
 }

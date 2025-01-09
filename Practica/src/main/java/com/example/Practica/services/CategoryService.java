@@ -9,6 +9,8 @@ import com.example.Practica.persistence.entity.CategoryEntity;
 import com.example.Practica.persistence.repository.CategoryRepository;
 import com.example.Practica.presentation.controller.dto.CategoryDTO;
 import com.example.Practica.utils.mappers.CategoryMapper;
+import com.example.Practica.utils.messageErrors.category.CategoryNotFoundMessage;
+import com.example.Practica.utils.regex.ValidatorRegex;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class CategoryService {
     
     private final CategoryRepository categoryRepository;
+    private final ValidatorRegex validatorRegex;
 
     // METODO ALL
     public List<CategoryDTO> findAllCategories(){
@@ -32,7 +35,7 @@ public class CategoryService {
         return categoryRepository.findById(id)
             .map(CategoryMapper.INSTANCE::fromEntity)
             .orElseThrow(
-                () -> new RuntimeException("La categoria no existe")
+                () -> new CategoryNotFoundMessage("La categoria no existe")
             );
     }
 
@@ -41,18 +44,8 @@ public class CategoryService {
     public CategoryDTO createCategory(CategoryDTO categoryDTO){
         CategoryEntity category = CategoryMapper.INSTANCE.fromDTO(categoryDTO);
 
-       // NOMBRES VALIDOS CON REGEX
-        if(categoryDTO.nombre() == null || !categoryDTO.nombre().matches("[a-zA-Z ]+")){
-            throw new RuntimeException("El nombre de la categoria no es valido");
-        }
-
-        if(categoryRepository.existsByNombre(categoryDTO.nombre())){
-            throw new RuntimeException("La categoria ya existe");
-        }
-
-        if (categoryDTO.descripcion() == null || !categoryDTO.descripcion().matches("[a-zA-Z0-9 ]+")) {
-            throw new RuntimeException("La descripcion de la categoria no es valida");
-        }
+        ValidatorRegex.validarNombre(category.getNombre());
+        ValidatorRegex.validarDescripcion(category.getDescripcion());
 
         CategoryEntity categorySaved = categoryRepository.save(category);
         return CategoryMapper.INSTANCE.fromEntity(categorySaved);
@@ -68,7 +61,7 @@ public class CategoryService {
                     return categoryRepository.save(category);
                 })
                 .map(CategoryMapper.INSTANCE::fromEntity)
-                .orElseThrow(() -> new RuntimeException("La categoria con id " + id + " no existe"));
+                .orElseThrow(() -> new CategoryNotFoundMessage("La categoria con id " + id + " no existe"));
     }
 
 
@@ -76,7 +69,7 @@ public class CategoryService {
     @Transactional
     public void deleteCategory(Long id){
         if(!categoryRepository.existsById(id)){
-            throw new RuntimeException("La categoria con id " + id + " no existe");
+            throw new CategoryNotFoundMessage("La categoria con id " + id + " no existe");
         }
         categoryRepository.deleteById(id);
     }
