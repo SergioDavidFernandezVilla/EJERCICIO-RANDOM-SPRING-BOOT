@@ -32,7 +32,7 @@ public class ProductService {
     private final ImageRepository imageRepository;
 
     public ProductService(ProductRepository productRepository, MarcaRepository marcaRepository,
-            CategoryRepository categoryRepository, ImageRepository imageRepository) {
+        CategoryRepository categoryRepository, ImageRepository imageRepository) {
         this.productRepository = productRepository;
         this.marcaRepository = marcaRepository;
         this.categoryRepository = categoryRepository;
@@ -109,6 +109,15 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalArgumentException(
                         "La imagen con ID " + productDTO.image().id() + " no existe"));
 
+        // VALIDAR CON REGEX
+        if (productDTO.nombre() == null || !productDTO.nombre().matches("[a-zA-Z ]+")) {
+            throw new IllegalArgumentException("El nombre del producto no es valido");
+        }
+
+        if (productDTO.descripcion() == null || !productDTO.descripcion().matches("[a-zA-Z0-9 ]+")) {
+            throw new IllegalArgumentException("La descripcion del producto no es valida");
+        }
+
         // Crear la entidad de producto a partir del DTO
         ProductEntity product = ProductMapper.INSTANCE.fromDTO(productDTO);
 
@@ -127,6 +136,16 @@ public class ProductService {
     // METODO ACTULIZAR
     @Transactional
     public ProductDTO updateProduct(ProductDTO productDTO) {
+
+        // VALIDAR CON REGEX
+        if (productDTO.nombre() == null || !productDTO.nombre().matches("[a-zA-Z ]+")) {
+            throw new IllegalArgumentException("El nombre del producto no es valido");
+        }
+
+        if (productDTO.descripcion() == null || !productDTO.descripcion().matches("[a-zA-Z0-9 ]+")) {
+            throw new IllegalArgumentException("La descripcion del producto no es valida");
+        }
+
 
         productRepository.findById(productDTO.id())
                 .orElseThrow(
