@@ -41,8 +41,17 @@ public class CategoryService {
     public CategoryDTO createCategory(CategoryDTO categoryDTO){
         CategoryEntity category = CategoryMapper.INSTANCE.fromDTO(categoryDTO);
 
+       // NOMBRES VALIDOS CON REGEX
+        if(categoryDTO.nombre() == null || !categoryDTO.nombre().matches("[a-zA-Z ]+")){
+            throw new RuntimeException("El nombre de la categoria no es valido");
+        }
+
         if(categoryRepository.existsByNombre(categoryDTO.nombre())){
             throw new RuntimeException("La categoria ya existe");
+        }
+
+        if (categoryDTO.descripcion() == null || !categoryDTO.descripcion().matches("[a-zA-Z0-9 ]+")) {
+            throw new RuntimeException("La descripcion de la categoria no es valida");
         }
 
         CategoryEntity categorySaved = categoryRepository.save(category);
@@ -59,7 +68,7 @@ public class CategoryService {
                     return categoryRepository.save(category);
                 })
                 .map(CategoryMapper.INSTANCE::fromEntity)
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException("La categoria con id " + id + " no existe"));
     }
 
 
@@ -67,7 +76,7 @@ public class CategoryService {
     @Transactional
     public void deleteCategory(Long id){
         if(!categoryRepository.existsById(id)){
-            throw new RuntimeException("La categoria no existe");
+            throw new RuntimeException("La categoria con id " + id + " no existe");
         }
         categoryRepository.deleteById(id);
     }
