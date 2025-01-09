@@ -43,7 +43,8 @@ public class MarcaController {
     //UPDATE
     @PutMapping("/{id}")
     public ResponseEntity<MarcaDTO> updateMarca(@PathVariable Long id, @Valid @RequestBody MarcaDTO marcaDTO){
-        return ResponseEntity.ok(marcaService.updateMarca(marcaDTO));
+        MarcaDTO responseDTO = marcaService.updateMarca(id, marcaDTO);
+        return ResponseEntity.ok(responseDTO);
     }
     
 
