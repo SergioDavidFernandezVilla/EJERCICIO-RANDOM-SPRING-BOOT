@@ -1,5 +1,8 @@
 package com.example.Practica.utils.regex;
 
+import com.example.Practica.utils.messageErrors.ValidationNotMessage;
+import com.example.Practica.utils.messageErrors.category.CategoryValidationMessage;
+
 public class ValidatorRegex {
     
     // VALIDORES REGEX
@@ -13,13 +16,13 @@ public class ValidatorRegex {
     // VALIDORES
     public static void validarNombre(String nombre) {
         if (!nombre.matches(NOMBRE_REGEX)) {
-            throw new IllegalArgumentException("El nombre de la categoría no es válido");
+            throw new ValidationNotMessage("El nombre de la categoría no es válido");
         }
     }
     
     public static void validarDescripcion(String descripcion) {
         if (!descripcion.matches(DESCRIPCION_REGEX)) {
-            throw new IllegalArgumentException("La descripción de la categoría no es válida");
+            throw new ValidationNotMessage("La descripción de la categoría no es válida");
         }
     }
 }
