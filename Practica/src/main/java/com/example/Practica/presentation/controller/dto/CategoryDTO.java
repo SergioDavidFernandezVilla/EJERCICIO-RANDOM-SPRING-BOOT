@@ -1,7 +1,5 @@
 package com.example.Practica.presentation.controller.dto;
 
-import java.time.LocalDateTime;
-
-public record CategoryDTO(Long id, String nombre, String descripcion, LocalDateTime created_at, LocalDateTime updated_at) {
+public record CategoryDTO(Long id, String nombre, String descripcion, String created_at, String updated_at) {
     
 }

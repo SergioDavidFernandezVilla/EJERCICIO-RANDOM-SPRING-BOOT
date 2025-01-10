@@ -50,7 +50,9 @@ public class CategoryService {
         validatorRegex.validarNombre(category.getNombre());
         validatorRegex.validarDescripcion(category.getDescripcion());
 
-        CategoryEntity categorySaved = categoryRepository.save(category);
+        CategoryEntity categorySaved = categoryRepository.save(
+            CategoryMapper.INSTANCE.fromDTO(categoryDTO)
+        );
         return CategoryMapper.INSTANCE.fromEntity(categorySaved);
     }
     

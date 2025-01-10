@@ -17,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "categoria")
@@ -25,6 +26,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class CategoryEntity extends AuditEntity {
 
     @Id
@@ -41,6 +43,7 @@ public class CategoryEntity extends AuditEntity {
     private String descripcion;
 
     @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Set<ProductEntity> productos; // Relación inversa con "ProductEntity"
 
 }

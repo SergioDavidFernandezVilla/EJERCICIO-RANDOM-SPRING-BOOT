@@ -42,4 +42,5 @@ public class MarcaEntity extends AuditEntity {
     @OneToMany(mappedBy = "marca") // Asegúrate de que la propiedad en ProductoEntity se llame 'marca'
     private List<ProductEntity> productos;
 
+    
 }
