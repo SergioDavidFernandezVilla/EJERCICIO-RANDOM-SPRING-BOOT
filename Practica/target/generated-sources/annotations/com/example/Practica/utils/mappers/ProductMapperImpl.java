@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-10T05:00:28+0000",
+    date = "2025-01-10T05:08:36+0000",
     comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.41.0.v20241217-1506, environment: Java 17.0.13 (Eclipse Adoptium)"
 )
 @Component
@@ -26,6 +26,8 @@ public class ProductMapperImpl implements ProductMapper {
             return null;
         }
 
+        LocalDateTime created_at = null;
+        LocalDateTime updated_at = null;
         Long id = null;
         String nombre = null;
         String descripcion = null;
@@ -34,6 +36,8 @@ public class ProductMapperImpl implements ProductMapper {
         MarcaDTO marca = null;
         ImageDTO image = null;
 
+        created_at = product.getCreatedAt();
+        updated_at = product.getUpdatedAt();
         id = product.getId();
         nombre = product.getNombre();
         descripcion = product.getDescripcion();
@@ -41,9 +45,6 @@ public class ProductMapperImpl implements ProductMapper {
         categoria = categoryEntityToCategoryDTO( product.getCategoria() );
         marca = marcaEntityToMarcaDTO( product.getMarca() );
         image = imageEntityToImageDTO( product.getImage() );
-
-        LocalDateTime created_at = null;
-        LocalDateTime updated_at = null;
 
         ProductDTO productDTO = new ProductDTO( id, nombre, descripcion, precio, created_at, updated_at, categoria, marca, image );
 
