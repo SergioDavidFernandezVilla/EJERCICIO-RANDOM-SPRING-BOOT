@@ -2,41 +2,44 @@ package com.example.Practica.persistence.entity;
 
 import java.time.LocalDateTime;
 
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import jakarta.persistence.Column;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 
 @MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
 public abstract class AuditEntity {
-    
+
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime created_at = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updated_at = LocalDateTime.now();
-
-     // Constructor para asegurar que las fechas se inicialicen
-     public AuditEntity() {
-        this.created_at = LocalDateTime.now();
-        this.updated_at = LocalDateTime.now();
-    }
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
     @PrePersist
     public void prePersist() {
-        // Asegura que las fechas se seteen si no fueron inicializadas por el constructor
-        if (created_at == null) {
-            created_at = LocalDateTime.now();
-        }
-        updated_at = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
 
     @PreUpdate
     public void preUpdate() {
-        updated_at = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    // Getters y Setters
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
