@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-10T02:58:26+0000",
+    date = "2025-01-10T05:00:28+0000",
     comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.41.0.v20241217-1506, environment: Java 17.0.13 (Eclipse Adoptium)"
 )
 @Component
@@ -126,9 +126,10 @@ public class ProductMapperImpl implements ProductMapper {
         type = imageEntity.getType();
         fileName = imageEntity.getFileName();
 
+        LocalDateTime created_at = null;
         LocalDateTime updated_at = null;
 
-        ImageDTO imageDTO = new ImageDTO( id, type, fileName, updated_at );
+        ImageDTO imageDTO = new ImageDTO( id, type, fileName, created_at, updated_at );
 
         return imageDTO;
     }
