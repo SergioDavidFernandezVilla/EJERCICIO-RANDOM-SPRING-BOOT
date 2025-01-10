@@ -17,5 +17,6 @@ public interface CategoryMapper {
     @Mapping(target = "updated_at", source = "updatedAt")
     CategoryDTO fromEntity(CategoryEntity categoryEntity);
     
+    @Mapping(target = "productos", ignore = true)
     CategoryEntity fromDTO(CategoryDTO categoryDTO);
 }

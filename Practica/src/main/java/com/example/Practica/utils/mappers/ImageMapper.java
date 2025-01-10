@@ -17,6 +17,9 @@ public interface ImageMapper {
     @Mapping(target = "created_at", source = "createdAt")
     @Mapping(target = "updated_at", source = "updatedAt")
     ImageDTO fromEntity(ImageEntity image);
+
+    @Mapping(target = "filePath", ignore = true)
+    @Mapping(target = "productos", ignore = true)
     ImageEntity fromDTO(ImageDTO image);
 
     List<ImageDTO> toImageDTOList(List<ImageEntity> images);

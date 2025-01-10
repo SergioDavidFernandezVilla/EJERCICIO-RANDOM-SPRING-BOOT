@@ -19,6 +19,7 @@ public interface MarcaMapper {
     MarcaDTO fromEntity(MarcaEntity marca);
 
     // Entity <-> DTO
+    @Mapping(target = "productos", ignore = true)
     MarcaEntity fromDTO(MarcaDTO marca);
 
 }

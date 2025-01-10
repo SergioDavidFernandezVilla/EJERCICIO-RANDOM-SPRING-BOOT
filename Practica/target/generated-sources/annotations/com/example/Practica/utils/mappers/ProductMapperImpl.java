@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-10T05:08:36+0000",
+    date = "2025-01-10T05:30:26+0000",
     comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.41.0.v20241217-1506, environment: Java 17.0.13 (Eclipse Adoptium)"
 )
 @Component
@@ -26,25 +26,25 @@ public class ProductMapperImpl implements ProductMapper {
             return null;
         }
 
+        CategoryDTO categoria = null;
+        ImageDTO image = null;
+        MarcaDTO marca = null;
         LocalDateTime created_at = null;
         LocalDateTime updated_at = null;
         Long id = null;
         String nombre = null;
         String descripcion = null;
         Double precio = null;
-        CategoryDTO categoria = null;
-        MarcaDTO marca = null;
-        ImageDTO image = null;
 
+        categoria = categoryEntityToCategoryDTO( product.getCategoria() );
+        image = imageEntityToImageDTO( product.getImage() );
+        marca = marcaEntityToMarcaDTO( product.getMarca() );
         created_at = product.getCreatedAt();
         updated_at = product.getUpdatedAt();
         id = product.getId();
         nombre = product.getNombre();
         descripcion = product.getDescripcion();
         precio = product.getPrecio();
-        categoria = categoryEntityToCategoryDTO( product.getCategoria() );
-        marca = marcaEntityToMarcaDTO( product.getMarca() );
-        image = imageEntityToImageDTO( product.getImage() );
 
         ProductDTO productDTO = new ProductDTO( id, nombre, descripcion, precio, created_at, updated_at, categoria, marca, image );
 
@@ -77,41 +77,21 @@ public class ProductMapperImpl implements ProductMapper {
             return null;
         }
 
+        LocalDateTime created_at = null;
+        LocalDateTime updated_at = null;
         Long id = null;
         String nombre = null;
         String descripcion = null;
 
+        created_at = categoryEntity.getCreatedAt();
+        updated_at = categoryEntity.getUpdatedAt();
         id = categoryEntity.getId();
         nombre = categoryEntity.getNombre();
         descripcion = categoryEntity.getDescripcion();
 
-        LocalDateTime created_at = null;
-        LocalDateTime updated_at = null;
-
         CategoryDTO categoryDTO = new CategoryDTO( id, nombre, descripcion, created_at, updated_at );
 
         return categoryDTO;
-    }
-
-    protected MarcaDTO marcaEntityToMarcaDTO(MarcaEntity marcaEntity) {
-        if ( marcaEntity == null ) {
-            return null;
-        }
-
-        Long id = null;
-        String nombre = null;
-        String descripcion = null;
-
-        id = marcaEntity.getId();
-        nombre = marcaEntity.getNombre();
-        descripcion = marcaEntity.getDescripcion();
-
-        LocalDateTime created_at = null;
-        LocalDateTime updated_at = null;
-
-        MarcaDTO marcaDTO = new MarcaDTO( id, nombre, descripcion, created_at, updated_at );
-
-        return marcaDTO;
     }
 
     protected ImageDTO imageEntityToImageDTO(ImageEntity imageEntity) {
@@ -119,20 +99,43 @@ public class ProductMapperImpl implements ProductMapper {
             return null;
         }
 
+        LocalDateTime created_at = null;
+        LocalDateTime updated_at = null;
         Long id = null;
         String type = null;
         String fileName = null;
 
+        created_at = imageEntity.getCreatedAt();
+        updated_at = imageEntity.getUpdatedAt();
         id = imageEntity.getId();
         type = imageEntity.getType();
         fileName = imageEntity.getFileName();
 
-        LocalDateTime created_at = null;
-        LocalDateTime updated_at = null;
-
         ImageDTO imageDTO = new ImageDTO( id, type, fileName, created_at, updated_at );
 
         return imageDTO;
+    }
+
+    protected MarcaDTO marcaEntityToMarcaDTO(MarcaEntity marcaEntity) {
+        if ( marcaEntity == null ) {
+            return null;
+        }
+
+        LocalDateTime created_at = null;
+        LocalDateTime updated_at = null;
+        Long id = null;
+        String nombre = null;
+        String descripcion = null;
+
+        created_at = marcaEntity.getCreatedAt();
+        updated_at = marcaEntity.getUpdatedAt();
+        id = marcaEntity.getId();
+        nombre = marcaEntity.getNombre();
+        descripcion = marcaEntity.getDescripcion();
+
+        MarcaDTO marcaDTO = new MarcaDTO( id, nombre, descripcion, created_at, updated_at );
+
+        return marcaDTO;
     }
 
     protected CategoryEntity categoryDTOToCategoryEntity(CategoryDTO categoryDTO) {
