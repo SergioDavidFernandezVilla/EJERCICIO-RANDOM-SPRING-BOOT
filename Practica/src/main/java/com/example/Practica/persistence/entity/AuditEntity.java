@@ -15,10 +15,10 @@ import jakarta.persistence.PreUpdate;
 public abstract class AuditEntity {
     
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime created_at = LocalDateTime.now();
 
     @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updated_at;
+    private LocalDateTime updated_at = LocalDateTime.now();
 
      // Constructor para asegurar que las fechas se inicialicen
      public AuditEntity() {

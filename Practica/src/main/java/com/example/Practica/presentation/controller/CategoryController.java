@@ -45,15 +45,23 @@ public class CategoryController {
     // METODO CREATE
     @PostMapping
     public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody CategoryDTO categoryDTO){
-        CategoryDTO responseDTO = categoryService.createCategory(categoryDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+        try {
+            CategoryDTO responseDTO = categoryService.createCategory(categoryDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     // METODO PUT
     @PutMapping("/{id}")
     public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO){
-        CategoryDTO responseDTO = categoryService.updateCategory(id, categoryDTO);
-        return ResponseEntity.ok(responseDTO);
+        try {
+            CategoryDTO responseDTO = categoryService.updateCategory(id, categoryDTO);
+            return ResponseEntity.ok(responseDTO);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     // METODO DELETE
