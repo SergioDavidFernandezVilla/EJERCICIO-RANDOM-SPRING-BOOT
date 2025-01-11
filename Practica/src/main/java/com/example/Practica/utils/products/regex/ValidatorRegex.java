@@ -1,7 +1,7 @@
 package com.example.Practica.utils.products.regex;
 
 import org.springframework.stereotype.Component;
-import com.example.Practica.utils.messageErrors.ValidationNotMessage;
+import com.example.Practica.utils.products.messageErrors.ValidationNotMessage;
 
 @Component
 public class ValidatorRegex {
