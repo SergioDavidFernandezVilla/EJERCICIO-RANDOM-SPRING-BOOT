@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import com.example.Practica.persistence.entity.products.ImageEntity;
-import com.example.Practica.presentation.controller.dto.ImageDTO;
+import com.example.Practica.presentation.products.dto.ImageDTO;
 
 @Mapper(componentModel = "spring")
 public interface ImageMapper {

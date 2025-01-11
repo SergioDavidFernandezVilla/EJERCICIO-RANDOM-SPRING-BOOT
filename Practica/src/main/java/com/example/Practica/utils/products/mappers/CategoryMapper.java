@@ -5,7 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import com.example.Practica.persistence.entity.products.CategoryEntity;
-import com.example.Practica.presentation.controller.dto.CategoryDTO;
+import com.example.Practica.presentation.products.dto.CategoryDTO;
 
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {

@@ -1,4 +1,4 @@
-package com.example.Practica.presentation.controller.products;
+package com.example.Practica.presentation.products.controller;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Practica.presentation.controller.dto.CategoryDTO;
+import com.example.Practica.presentation.products.dto.CategoryDTO;
 import com.example.Practica.services.products.CategoryService;
 
 import jakarta.validation.Valid;

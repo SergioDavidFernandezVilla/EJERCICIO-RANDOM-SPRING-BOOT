@@ -5,7 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import com.example.Practica.persistence.entity.products.ProductEntity;
-import com.example.Practica.presentation.controller.dto.ProductDTO;
+import com.example.Practica.presentation.products.dto.ProductDTO;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {

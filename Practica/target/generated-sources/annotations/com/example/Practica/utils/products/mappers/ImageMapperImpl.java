@@ -1,7 +1,7 @@
 package com.example.Practica.utils.products.mappers;
 
 import com.example.Practica.persistence.entity.products.ImageEntity;
-import com.example.Practica.presentation.controller.dto.ImageDTO;
+import com.example.Practica.presentation.products.dto.ImageDTO;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-11T01:46:17+0000",
-    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.41.0.v20241217-1506, environment: Java 17.0.13 (Eclipse Adoptium)"
+    date = "2025-01-11T19:59:41+0000",
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.41.0.z20250107-1446, environment: Java 21.0.3 (N/A)"
 )
 @Component
 public class ImageMapperImpl implements ImageMapper {

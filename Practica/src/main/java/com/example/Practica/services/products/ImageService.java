@@ -13,8 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.Practica.persistence.entity.products.ImageEntity;
 import com.example.Practica.persistence.repository.products.ImageRepository;
-import com.example.Practica.presentation.controller.dto.ImageDTO;
 import com.example.Practica.utils.products.mappers.ImageMapper;
+import com.example.Practica.presentation.products.dto.ImageDTO;
 
 @Service
 public class ImageService {

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.Practica.persistence.entity.products.MarcaEntity;
 import com.example.Practica.persistence.repository.products.MarcaRepository;
-import com.example.Practica.presentation.controller.dto.MarcaDTO;
+import com.example.Practica.presentation.products.dto.MarcaDTO;
 import com.example.Practica.utils.products.mappers.MarcaMapper;
 import com.example.Practica.utils.products.messageErrors.marca.MarcaNotFoundMessage;
 import com.example.Practica.utils.products.regex.ValidatorRegex;

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.Practica.persistence.entity.products.CategoryEntity;
 import com.example.Practica.persistence.repository.products.CategoryRepository;
-import com.example.Practica.presentation.controller.dto.CategoryDTO;
+import com.example.Practica.presentation.products.dto.CategoryDTO;
 import com.example.Practica.utils.products.mappers.CategoryMapper;
 import com.example.Practica.utils.products.messageErrors.category.CategoryNotFoundMessage;
 import com.example.Practica.utils.products.regex.ValidatorRegex;

@@ -1,4 +1,4 @@
-package com.example.Practica.presentation.controller.products;
+package com.example.Practica.presentation.products.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Practica.presentation.controller.dto.ProductDTO;
+import com.example.Practica.presentation.products.dto.ProductDTO;
 import com.example.Practica.services.products.ProductService;
 import com.example.Practica.utils.products.messageResponse.ApiResponse;
 

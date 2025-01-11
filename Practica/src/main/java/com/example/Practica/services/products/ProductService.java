@@ -12,10 +12,10 @@ import com.example.Practica.persistence.repository.products.CategoryRepository;
 import com.example.Practica.persistence.repository.products.ImageRepository;
 import com.example.Practica.persistence.repository.products.MarcaRepository;
 import com.example.Practica.persistence.repository.products.ProductRepository;
-import com.example.Practica.presentation.controller.dto.CategoryDTO;
-import com.example.Practica.presentation.controller.dto.ImageDTO;
-import com.example.Practica.presentation.controller.dto.MarcaDTO;
-import com.example.Practica.presentation.controller.dto.ProductDTO;
+import com.example.Practica.presentation.products.dto.CategoryDTO;
+import com.example.Practica.presentation.products.dto.ImageDTO;
+import com.example.Practica.presentation.products.dto.MarcaDTO;
+import com.example.Practica.presentation.products.dto.ProductDTO;
 
 import com.example.Practica.utils.products.mappers.CategoryMapper;
 import com.example.Practica.utils.products.mappers.ImageMapper;

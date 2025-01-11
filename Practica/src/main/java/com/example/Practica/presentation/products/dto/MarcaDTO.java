@@ -1,4 +1,4 @@
-package com.example.Practica.presentation.controller.dto;
+package com.example.Practica.presentation.products.dto;
 
 import java.time.LocalDateTime;
 

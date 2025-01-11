@@ -5,8 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import com.example.Practica.persistence.entity.products.MarcaEntity;
-import com.example.Practica.presentation.controller.dto.MarcaDTO;
-
+import com.example.Practica.presentation.products.dto.MarcaDTO;
 
 @Mapper(componentModel = "spring")
 public interface MarcaMapper {
