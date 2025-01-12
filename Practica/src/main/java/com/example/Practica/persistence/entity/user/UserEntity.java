@@ -1,6 +1,8 @@
 package com.example.Practica.persistence.entity.user;
 
 import com.example.Practica.persistence.entity.audit.AuditEntity;
+import com.example.Practica.persistence.entity.user.permissions.PermissionEntity;
+import com.example.Practica.persistence.entity.user.roles.RoleEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -37,9 +39,9 @@ public class UserEntity extends AuditEntity {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "permissions_id")
-    private String permissions;
+    private PermissionEntity permissions;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roles_id")
-    private String roles;
+    private RoleEntity roles;
 }
