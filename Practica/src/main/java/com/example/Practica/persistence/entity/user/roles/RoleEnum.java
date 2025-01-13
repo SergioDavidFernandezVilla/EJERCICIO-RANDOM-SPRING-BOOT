@@ -4,5 +4,5 @@ public enum RoleEnum {
     ADMIN,
     USER,
     INVITED,
-    GUEST
+    GUEST // PERSONA SIN REGISTRO EN LA APLICACIÓN
 }

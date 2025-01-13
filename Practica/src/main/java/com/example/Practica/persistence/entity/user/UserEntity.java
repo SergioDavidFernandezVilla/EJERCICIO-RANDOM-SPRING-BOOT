@@ -33,6 +33,7 @@ public class UserEntity extends AuditEntity {
 
     private String email;
     private String password;
+    private String confirmPassword;
     private String name;
     private String lastName;
     private String birthDate;

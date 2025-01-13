@@ -1,8 +1,6 @@
 package com.example.Practica.persistence.entity.user.roles;
 
 import com.example.Practica.persistence.entity.audit.AuditEntity;
-import com.example.Practica.persistence.entity.user.permissions.PermissionEnum;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 
 @Entity
 @Builder
@@ -27,6 +26,8 @@ public class RoleEntity extends AuditEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private RoleEnum roles;
+    @Builder.Default
+    private RoleEnum roles = RoleEnum.GUEST;
     private String description;
+    
 }
