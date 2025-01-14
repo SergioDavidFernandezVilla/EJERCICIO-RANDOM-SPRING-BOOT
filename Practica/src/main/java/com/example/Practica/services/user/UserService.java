@@ -1,12 +1,17 @@
 package com.example.Practica.services.user;
 
+import java.util.List;
+
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.Practica.persistence.entity.user.UserEntity;
 import com.example.Practica.persistence.repository.user.UserRepository;
 import com.example.Practica.presentation.userResponse.dto.LoginRequestDTO;
 import com.example.Practica.presentation.userResponse.dto.RegisterRequestDTO;
+import com.example.Practica.presentation.userResponse.dto.UserRequestDTO;
 import com.example.Practica.utils.userResponse.mappers.UserRegisterMapper;
+import com.example.Practica.utils.userResponse.mappers.UserRequestMapper;
 import com.example.Practica.utils.userResponse.validation.UserResponseValidation;
 
 import jakarta.transaction.Transactional;
@@ -24,8 +29,16 @@ public class UserService {
     }
 
     // GET ALL
-    public Iterable<UserEntity> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserRequestDTO> getAllUsers() {
+
+        if(userRepository.count() == 0){
+            throw new RuntimeException("No hay usuarios");
+        }
+
+        return userRepository.findAll(Sort.by(Sort.Direction.ASC, "id"))
+        .stream()
+        .map(UserRequestMapper.INSTANCE::fromDTO)
+        .toList();
     }
 
     // LOGIN
