@@ -2,6 +2,9 @@ package com.example.Practica.services.user;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -28,18 +31,18 @@ public class UserService {
         this.userResponseValidation = userResponseValidation;
     }
 
-    // GET ALL
-    public List<UserRequestDTO> getAllUsers() {
+    // ALL USERS WITH PAGINATION
+    public Page<UserRequestDTO> findAllUsers(Pageable pageable) {
 
-        if(userRepository.count() == 0){
-            throw new RuntimeException("No hay usuarios");
+        if (pageable.getPageNumber() < 0) {
+            throw new IllegalArgumentException("El número de página no puede ser negativo");
         }
 
-        return userRepository.findAll(Sort.by(Sort.Direction.ASC, "id"))
-        .stream()
-        .map(UserRequestMapper.INSTANCE::fromDTO)
-        .toList();
+        Page<UserEntity> users = userRepository.findAll(pageable);
+        return users.map(user -> UserRequestMapper.INSTANCE.fromDTO(user));
     }
+
+
 
     // LOGIN
     public boolean loginUser(LoginRequestDTO loginRequestDTO) {
