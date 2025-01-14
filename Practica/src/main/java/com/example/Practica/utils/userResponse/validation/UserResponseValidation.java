@@ -10,6 +10,9 @@ import com.example.Practica.utils.userResponse.regex.UserResponseRegex;
 public class UserResponseValidation {
 
     public boolean validateEmail(String email) {
+        if (email == null) {
+            return false; // o lanza una excepción si es necesario
+        }
         return email.matches(UserResponseRegex.EMAIL_REGEX);
     }
 
