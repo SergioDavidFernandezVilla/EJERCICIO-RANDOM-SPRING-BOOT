@@ -9,6 +9,8 @@ import com.example.Practica.presentation.userResponse.dto.RegisterRequestDTO;
 import com.example.Practica.utils.userResponse.mappers.UserRegisterMapper;
 import com.example.Practica.utils.userResponse.validation.UserResponseValidation;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class UserService {
 
@@ -34,6 +36,7 @@ public class UserService {
     }
 
     // CREATE
+    @Transactional
     public RegisterRequestDTO registerUser(RegisterRequestDTO registerRequestDTO) {
         // Validar los datos del DTO
         if (!userResponseValidation.validateEmail(registerRequestDTO.email())) {

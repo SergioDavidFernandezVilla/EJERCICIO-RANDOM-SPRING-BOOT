@@ -2,8 +2,11 @@ package com.example.Practica.utils.userResponse.validation;
 
 import java.time.LocalDate;
 
+import org.springframework.stereotype.Component;
+
 import com.example.Practica.utils.userResponse.regex.UserResponseRegex;
 
+@Component  // Marca esta clase como un bean gestionado por Spring
 public class UserResponseValidation {
 
     public boolean validateEmail(String email) {
