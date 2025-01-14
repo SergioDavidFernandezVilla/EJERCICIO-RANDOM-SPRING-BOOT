@@ -36,9 +36,41 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Page<UserRequestDTO>> getAllUsers(@PageableDefault(size = 10) Pageable pageable) {
-        Page<UserRequestDTO> users = userService.findAllUsers(pageable);
-        return ResponseEntity.ok(users);
+    public ResponseEntity<ApiResponse> getAllUsers(@PageableDefault(size = 10) Pageable pageable) {
+
+        try {
+
+            Page<UserRequestDTO> response = userService.findAllUsers(pageable);
+
+            ApiResponse.Pagination pagination = new ApiResponse.Pagination(
+                    response.getNumber(),
+                    response.getTotalPages(),
+                    response.getSize(),
+                    response.getTotalElements());
+
+            // Retornar la respuesta exitosa con los productos y la paginación
+            ApiResponse apiResponse = ApiResponse.builder()
+                    .message("Usuarios obtenidos exitosamente")
+                    .statusCode(200)
+                    .status("success")
+                    .data(response.getContent()) // Los productos de la página
+                    .pagination(pagination) // Incluir la paginación
+                    .error(null)
+                    .build();
+
+            return ResponseEntity.ok(apiResponse);
+        } catch (Exception e) {
+            // Si hay un error, devolver una respuesta de error
+            ApiResponse apiResponse = ApiResponse.builder()
+                    .message("Error al obtener los productos")
+                    .status("error")
+                    .data(null)
+                    .statusCode(500)
+                    .error(e.getMessage())
+                    .build();
+
+            return ResponseEntity.status(500).body(apiResponse);
+        }
     }
 
     // Otros métodos para manejar las operaciones relacionadas con los usuarios
