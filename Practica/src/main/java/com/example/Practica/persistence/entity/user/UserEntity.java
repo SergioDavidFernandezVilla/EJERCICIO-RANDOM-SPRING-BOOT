@@ -5,6 +5,7 @@ import com.example.Practica.persistence.entity.audit.AuditEntity;
 import com.example.Practica.persistence.entity.user.permissions.PermissionEntity;
 import com.example.Practica.persistence.entity.user.roles.RoleEntity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +23,8 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import org.hibernate.annotations.GenericGenerator;
+
 
 @Entity
 @Builder
@@ -33,7 +36,12 @@ import java.util.UUID;
 public class UserEntity extends AuditEntity {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+        name = "UUID",
+        strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
     private UUID id;
 
     private String email;
