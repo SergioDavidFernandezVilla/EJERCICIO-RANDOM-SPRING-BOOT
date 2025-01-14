@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 public record RegisterRequestDTO(
-    @NotBlank @Email String email,
+    @Email String email,
     @NotBlank @Size(min = 8, max = 25) 
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$",
              message = "La contraseña debe contener al menos una letra mayúscula, un número y un carácter especial.")
