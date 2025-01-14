@@ -1,5 +1,6 @@
 package com.example.Practica.persistence.entity.user;
 
+
 import com.example.Practica.persistence.entity.audit.AuditEntity;
 import com.example.Practica.persistence.entity.user.permissions.PermissionEntity;
 import com.example.Practica.persistence.entity.user.roles.RoleEntity;
@@ -18,6 +19,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.util.UUID;
+
+
 @Entity
 @Builder
 @Setter
@@ -29,14 +34,14 @@ public class UserEntity extends AuditEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
 
     private String email;
     private String password;
     private String confirmPassword;
-    private String name;
+    private String username;
     private String lastName;
-    private String birthDate;
+    private LocalDate birthDate;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "permissions_id")
