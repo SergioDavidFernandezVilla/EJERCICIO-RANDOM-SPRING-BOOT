@@ -1,11 +1,8 @@
 package com.example.Practica.services.user;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.Practica.persistence.entity.user.UserEntity;

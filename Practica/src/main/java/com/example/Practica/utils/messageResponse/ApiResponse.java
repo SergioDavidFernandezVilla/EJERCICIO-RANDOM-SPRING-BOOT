@@ -1,4 +1,4 @@
-package com.example.Practica.utils.products.messageResponse;
+package com.example.Practica.utils.messageResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

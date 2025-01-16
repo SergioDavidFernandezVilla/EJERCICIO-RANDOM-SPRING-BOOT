@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Practica.presentation.products.dto.ProductDTO;
 import com.example.Practica.services.products.ProductService;
-import com.example.Practica.utils.products.messageResponse.ApiResponse;
+import com.example.Practica.utils.messageResponse.ApiResponse;
 
 import jakarta.validation.Valid;
 
